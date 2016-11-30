@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "19759741738",
+    "project_id": "firebase-level-up"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:19759741738:android:a2e4efb0fe7c7fbd",
+        "android_client_info": {
+          "package_name": "com.gmat.terminator"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "19759741738-2vvhv6bancmo9v0e3a1a6r7ihfr3ovgg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gmat.terminator",
+            "certificate_hash": "6FD38447079ACCAB4AC951147DF045A57305DFA7"
+          }
+        },
+        {
+          "client_id": "19759741738-rntj6dqa0oi6jr4q9irjuu8ml0kp5u5g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB12GHQMwk81VNx1noug8ra59G2PB5y7Pk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

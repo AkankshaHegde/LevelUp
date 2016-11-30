@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_date_countDown"
+            android:title="@string/nav_date_countDown" />
+        <item
+            android:id="@+id/nav_create_test"
+            android:title="@string/nav_create_test" />
+        <item
+            android:id="@+id/nav_stats"
+            android:title="@string/nav_stats" />
+
+        <item
+            android:id="@+id/nav_templates"
+            android:title="@string/nav_templates" />
+
+        <item
+            android:id="@+id/nav_question_type"
+            android:title="@string/nav_question_type" />
+
+        <item
+            android:id="@+id/nav_history"
+            android:title="@string/nav_history" />
+    </group>
+</menu>
