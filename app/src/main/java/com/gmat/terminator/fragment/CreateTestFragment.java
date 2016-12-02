@@ -11,13 +11,9 @@ import android.view.ViewGroup;
 import com.gmat.terminator.R;
 
 /**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link CreateTestFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link CreateTestFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * Created by Akanksha on 16-Nov-16.
  */
+
 public class CreateTestFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -28,7 +24,7 @@ public class CreateTestFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private OnFragmentInteractionListener mListener;
+    private TestCountdownFragment.OnFragmentInteractionListener mListener;
 
     public CreateTestFragment() {
         // Required empty public constructor
@@ -43,8 +39,8 @@ public class CreateTestFragment extends Fragment {
      * @return A new instance of fragment HomeFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static CreateTestFragment newInstance(String param1, String param2) {
-        CreateTestFragment fragment = new CreateTestFragment();
+    public static TestCountdownFragment newInstance(String param1, String param2) {
+        TestCountdownFragment fragment = new TestCountdownFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);

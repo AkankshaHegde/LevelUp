@@ -24,7 +24,7 @@ public class QuestionTypeFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private CreateTestFragment.OnFragmentInteractionListener mListener;
+    private TestCountdownFragment.OnFragmentInteractionListener mListener;
 
     public QuestionTypeFragment() {
         // Required empty public constructor
@@ -39,8 +39,8 @@ public class QuestionTypeFragment extends Fragment {
      * @return A new instance of fragment HomeFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static CreateTestFragment newInstance(String param1, String param2) {
-        CreateTestFragment fragment = new CreateTestFragment();
+    public static TestCountdownFragment newInstance(String param1, String param2) {
+        TestCountdownFragment fragment = new TestCountdownFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);

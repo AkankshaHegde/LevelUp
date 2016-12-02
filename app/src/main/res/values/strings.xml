@@ -30,4 +30,8 @@
     <string name="privacy_policy">Privacy Policy</string>
     <string name="pick_date">Pick a date</string>
     <string name="pick_date_value">_ _ / _ _ / _ _ _ _</string>
+    <string name="countdown_txt">Test Countdown</string>
+    <string name="pick_time">Pick a time</string>
+    <string name="selected_date">Test date</string>
+
 </resources>

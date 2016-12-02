@@ -21,12 +21,12 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.gmat.terminator.fragment.CreateTestFragment;
+import com.gmat.terminator.fragment.TestCountdownFragment;
 import com.gmat.terminator.fragment.HistoryFragment;
 import com.gmat.terminator.fragment.QuestionTypeFragment;
 import com.gmat.terminator.fragment.StatsFragment;
 import com.gmat.terminator.fragment.TemplatesFragment;
-import com.gmat.terminator.fragment.TestBreakDownFragment;
+import com.gmat.terminator.fragment.CreateTestFragment;
 import com.gmat.terminator.other.CircleTransform;
 
 public class MainActivity extends AppCompatActivity {
@@ -187,8 +187,8 @@ public class MainActivity extends AppCompatActivity {
         switch (navItemIndex) {
             case 0:
                 // textBreakdown fragment
-                TestBreakDownFragment testBreakDownFragment = new TestBreakDownFragment();
-                return testBreakDownFragment;
+                TestCountdownFragment testCountDownFragment = new TestCountdownFragment();
+                return testCountDownFragment;
             case 1:
                 // createTest fragment
                 CreateTestFragment createTestFragment = new CreateTestFragment();
@@ -211,7 +211,7 @@ public class MainActivity extends AppCompatActivity {
                 HistoryFragment historyFragment = new HistoryFragment();
                 return historyFragment;
             default:
-                return new TestBreakDownFragment();
+                return new CreateTestFragment();
         }
     }
 
