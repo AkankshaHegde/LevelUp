@@ -5,6 +5,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,15 +17,18 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.gmat.terminator.R;
+import com.gmat.terminator.interfaces.ICountdownTime;
 import com.gmat.terminator.interfaces.IDateSelection;
+import com.gmat.terminator.other.TestCoundownTimer;
 import com.gmat.terminator.utils.AppUtility;
 import com.gmat.terminator.utils.Constants;
 
 import java.util.Calendar;
 
-public class TestCountdownFragment extends Fragment implements View.OnClickListener, IDateSelection {
+public class TestCountdownFragment extends Fragment implements View.OnClickListener, IDateSelection, ICountdownTime {
     private TextView mSelectedDate, mSelectedTime, mCountdownTime;
     LinearLayout mCountDownTimerLyt, mPickdateLyt, mDateSelectorLyt, mTimeSelectorLyt;
+    private final long interval = 1 * 1000;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -84,10 +88,15 @@ public class TestCountdownFragment extends Fragment implements View.OnClickListe
             public void onTimeSet(TimePicker timePicker, int selectedHour, int
                     selectedMinute) {
                 mSelectedTime.setText(selectedHour + ":" + selectedMinute);
-                //mTimeSelectorLyt.setVisibility(View.GONE);
                 mPickdateLyt.setVisibility(View.VISIBLE);
                 SlideToAbove();
-                //TestCoundownTimer countDownTimer = new TestCoundownTimer(startTime, interval);
+
+                long startTime = AppUtility.getCountdownTimerMillis(mSelectedDate.getText().toString() + " " +
+                                selectedHour + ":" + selectedMinute + ":" + "00");
+                TestCoundownTimer countDownTimer = new TestCoundownTimer(startTime, interval, TestCountdownFragment.this);
+                //mCountdownTime.setText(mCountdownTime.getText() + String.valueOf(startTime / 1000));
+                countDownTimer.start();
+
                 mCountDownTimerLyt.setVisibility(View.VISIBLE);
                 //text.setText(text.getText() + String.valueOf(startTime / 1000));
             }
@@ -113,6 +122,55 @@ public class TestCountdownFragment extends Fragment implements View.OnClickListe
         mTimeSelectorLyt.setVisibility(View.VISIBLE);
         mSelectedDate.setText(date);
         handlePickTimeLytClick();
+    }
+
+    @Override
+    public void setRemainingTime(long millis) {
+        String countDownTime = getCountdownTimeValue(millis);
+        mCountdownTime.setText(String.valueOf(countDownTime));
+    }
+
+    private String getCountdownTimeValue(long millis) {
+        int weeks = (int) (millis / (1000*60*60*24*7));
+        int days = (int) (millis / (1000*60*60*24));
+        int hours   = (int) ((millis / (1000*60*60*60)) % 24);
+        int minutes = (int) ((millis / (1000*60)) % 60);
+        int seconds = (int) (millis / 1000) % 60 ;
+
+        String mCountdownValue = "";
+        if(weeks > 0) {
+            mCountdownValue = mCountdownValue + weeks;
+        }
+        if(days > 0) {
+            if(!TextUtils.isEmpty(mCountdownValue)) {
+                mCountdownValue = mCountdownValue + " : " + days;
+            } else {
+                mCountdownValue = mCountdownValue + days;
+            }
+        }
+        if(hours > 0) {
+            if(!TextUtils.isEmpty(mCountdownValue)) {
+                mCountdownValue = mCountdownValue + " : " + hours ;
+            } else {
+                mCountdownValue = mCountdownValue + hours;
+            }
+        }
+        if(minutes > 0) {
+            if(!TextUtils.isEmpty(mCountdownValue)) {
+                mCountdownValue = mCountdownValue + " : " + minutes ;
+            } else {
+                mCountdownValue = mCountdownValue + minutes;
+            }
+        }
+        if(seconds > 0) {
+            if(!TextUtils.isEmpty(mCountdownValue)) {
+                mCountdownValue = mCountdownValue + " : " + seconds;
+            } else {
+                mCountdownValue = mCountdownValue + seconds;
+            }
+        }
+
+        return mCountdownValue;
     }
 
     public interface OnFragmentInteractionListener {
