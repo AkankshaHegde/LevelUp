@@ -30,8 +30,19 @@
     <string name="privacy_policy">Privacy Policy</string>
     <string name="pick_date">Pick a date</string>
     <string name="pick_date_value">_ _ / _ _ / _ _ _ _</string>
-    <string name="countdown_txt">Test Countdown</string>
+    <string name="countdown_txt">Countdown</string>
     <string name="pick_time">Pick a time</string>
     <string name="selected_date">Test date</string>
+    <string name="change_test_date">Not Ready Yet?</string>
+    <string name="time_up">Time\'s Up</string>
+    <string name="countdown_ends">Countdown Ends!</string>
+    <string name="countdown_begins">Countdown Begins!!</string>
+
+    <string-array name="sections_array">
+        <item>Quantitative</item>
+        <item>Verbal</item>
+        <item>Integrated Reasoning</item>
+        <item>Analytical Writing Assessment</item>
+    </string-array>
 
 </resources>

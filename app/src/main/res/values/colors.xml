@@ -4,4 +4,5 @@
     <color name="colorPrimaryDark">#333030</color>
     <color name="colorAccent">#00BE90</color>
     <color name="fragment_bg_color">#E5E6E1</color>
+    <color name="countdown_color">#FF4500</color>
 </resources>

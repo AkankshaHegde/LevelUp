@@ -10,9 +10,11 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -26,8 +28,9 @@ import com.gmat.terminator.utils.Constants;
 import java.util.Calendar;
 
 public class TestCountdownFragment extends Fragment implements View.OnClickListener, IDateSelection, ICountdownTime {
-    private TextView mSelectedDate, mSelectedTime, mCountdownTime;
-    LinearLayout mCountDownTimerLyt, mPickdateLyt, mDateSelectorLyt, mTimeSelectorLyt;
+    private TextView mSelectedDate, mSelectedTime, mCountdownTime, mCountdownLabel;
+    private LinearLayout mCountDownTimerLyt, mPickdateLyt, mDateSelectorLyt, mTimeSelectorLyt, mChangeDateLyt;
+    private RelativeLayout mPickTestDateLyt;
     private final long interval = 1 * 1000;
 
     @Override
@@ -45,12 +48,16 @@ public class TestCountdownFragment extends Fragment implements View.OnClickListe
         mSelectedTime = (TextView) view.findViewById(R.id.selected_time_value);
         mSelectedDate = (TextView) view.findViewById(R.id.selected_date_value);
         mCountdownTime = (TextView) view.findViewById(R.id.test_countdown_value);
+        mPickTestDateLyt = (RelativeLayout) view.findViewById(R.id.pick_test_date_lyt);
+        mCountdownLabel= (TextView) view.findViewById(R.id.test_countdown_text);
 
         mPickdateLyt.setOnClickListener(this);
         mDateSelectorLyt = (LinearLayout) view.findViewById(R.id.pick_date_initial_lyt);
         mDateSelectorLyt.setOnClickListener(this);
         mTimeSelectorLyt = (LinearLayout) view.findViewById(R.id.pick_time_initial_lyt);
         mTimeSelectorLyt.setOnClickListener(this);
+        mChangeDateLyt = (LinearLayout) view.findViewById(R.id.change_date_lyt);
+        mChangeDateLyt.setOnClickListener(this);
     }
 
     @Override
@@ -74,6 +81,9 @@ public class TestCountdownFragment extends Fragment implements View.OnClickListe
             case R.id.pick_time_initial_lyt:
                 handlePickTimeLytClick();
                 break;
+            case R.id.change_date_lyt:
+                handlePickDateLytClick();
+                break;
         }
     }
 
@@ -89,20 +99,24 @@ public class TestCountdownFragment extends Fragment implements View.OnClickListe
                     selectedMinute) {
                 mSelectedTime.setText(selectedHour + ":" + selectedMinute);
                 mPickdateLyt.setVisibility(View.VISIBLE);
-                SlideToAbove();
+                setCoundownLyt();
 
                 long startTime = AppUtility.getCountdownTimerMillis(mSelectedDate.getText().toString() + " " +
                                 selectedHour + ":" + selectedMinute + ":" + "00");
                 TestCoundownTimer countDownTimer = new TestCoundownTimer(startTime, interval, TestCountdownFragment.this);
-                //mCountdownTime.setText(mCountdownTime.getText() + String.valueOf(startTime / 1000));
                 countDownTimer.start();
 
                 mCountDownTimerLyt.setVisibility(View.VISIBLE);
-                //text.setText(text.getText() + String.valueOf(startTime / 1000));
             }
         }, hour, minute, false);//true if 24 hour time
         mTimePicker.setTitle("");
         mTimePicker.show();
+    }
+
+    private void setCoundownLyt() {
+        mTimeSelectorLyt.setVisibility(View.GONE);
+        mDateSelectorLyt.setVisibility(View.GONE);
+        mPickTestDateLyt.setVisibility(View.VISIBLE);
     }
 
     private void handlePickDateLytClick() {
@@ -118,8 +132,6 @@ public class TestCountdownFragment extends Fragment implements View.OnClickListe
 
     @Override
     public void setSelectedDate(String date) {
-        mDateSelectorLyt.setVisibility(View.GONE);
-        mTimeSelectorLyt.setVisibility(View.VISIBLE);
         mSelectedDate.setText(date);
         handlePickTimeLytClick();
     }
@@ -127,7 +139,18 @@ public class TestCountdownFragment extends Fragment implements View.OnClickListe
     @Override
     public void setRemainingTime(long millis) {
         String countDownTime = getCountdownTimeValue(millis);
+        mCountdownLabel.setText(getResources().getString(R.string.countdown_begins));
         mCountdownTime.setText(String.valueOf(countDownTime));
+
+        if(countDownTime.equalsIgnoreCase(getResources().getString(R.string.time_up))) {
+            mCountdownLabel.setText(getResources().getString(R.string.countdown_ends));
+            Animation anim = new AlphaAnimation(0.0f, 1.0f);
+            anim.setDuration(500); //You can manage the blinking time with this parameter
+            anim.setStartOffset(50);
+            anim.setRepeatMode(Animation.REVERSE);
+            anim.setRepeatCount(Animation.INFINITE);
+            mCountdownTime.startAnimation(anim);
+        }
     }
 
     private String getCountdownTimeValue(long millis) {
@@ -168,6 +191,11 @@ public class TestCountdownFragment extends Fragment implements View.OnClickListe
             } else {
                 mCountdownValue = mCountdownValue + seconds;
             }
+        }
+
+        if(mCountdownValue.isEmpty()) {
+
+            mCountdownValue = getResources().getString(R.string.time_up);
         }
 
         return mCountdownValue;
@@ -211,6 +239,8 @@ public class TestCountdownFragment extends Fragment implements View.OnClickListe
                 lp.gravity = Gravity.TOP;
                 mTimeSelectorLyt.setLayoutParams(lp);
                 mTimeSelectorLyt.setVisibility(View.GONE);
+                mDateSelectorLyt.setVisibility(View.GONE);
+                mPickTestDateLyt.setVisibility(View.VISIBLE);
             }
 
         });

@@ -4,35 +4,43 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryDark">
 
-    <LinearLayout
-        android:id="@+id/pick_date_lyt"
+    <RelativeLayout
+        android:id="@+id/pick_test_date_lyt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="top"
-        android:visibility="gone"
-        android:background="@color/colorPrimary"
-        android:orientation="vertical">
+        android:visibility="gone">
 
-        <TextView
-            android:id="@+id/pick_date_text"
+        <LinearLayout
+            android:id="@+id/pick_date_lyt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:layout_marginTop="20dp"
-            android:textSize="20sp"
-            android:textColor="@android:color/white"
-            android:text="@string/selected_date" />
+            android:gravity="top"
+            android:visibility="visible"
+            android:background="@color/colorPrimary"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/selected_date_value"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:textSize="30sp"
-            android:layout_margin="10dp"
-            android:textColor="@android:color/white" />
+            <TextView
+                android:id="@+id/pick_date_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_marginTop="20dp"
+                android:textSize="20sp"
+                android:textColor="@android:color/white"
+                android:text="@string/selected_date" />
+
+            <TextView
+                android:id="@+id/selected_date_value"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textSize="30sp"
+                android:layout_margin="10dp"
+                android:textColor="@android:color/white" />
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/selected_time_value"
@@ -41,16 +49,44 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:textSize="44sp"
-            android:layout_margin="20dp"
+            android:paddingBottom="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="@color/colorPrimary"
+            android:layout_below="@id/pick_date_lyt"
             android:textColor="@android:color/white" />
 
-    </LinearLayout>
+        <LinearLayout
+            android:id="@+id/change_date_lyt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:clickable="true"
+            android:visibility="visible"
+            android:background="@drawable/circle_bg_background"
+            android:orientation="vertical"
+            android:layout_alignTop="@+id/selected_time_value"
+            android:layout_centerHorizontal="true">
+
+            <TextView
+                android:id="@+id/change_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textSize="25sp"
+                android:textColor="@android:color/white"
+                android:text="@string/change_test_date"/>
+
+        </LinearLayout>
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
+        android:visibility="visible"
         android:orientation="vertical">
 
         <LinearLayout
@@ -98,37 +134,34 @@
                 android:text="@string/pick_time"/>
 
         </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/test_countdown_lyt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:visibility="gone"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10sp"
-                android:text="@string/countdown_txt"
-                android:textColor="@android:color/white"
-                android:gravity="center"/>
-
-            <TextView
-                android:id="@+id/test_countdown_value"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:gravity="center"
-                android:padding="10sp"
-                android:textSize="44sp"
-                android:textColor="@android:color/holo_red_dark"
-                android:textStyle="bold" />
-
-        </LinearLayout>
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/test_countdown_lyt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_gravity="bottom"
+        android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/test_countdown_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10sp"
+            android:textSize="20sp"
+            android:text="@string/countdown_begins"
+            android:textColor="@android:color/white"
+            android:gravity="center"/>
+
+        <TextView
+            android:id="@+id/test_countdown_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            android:gravity="center"
+            android:textSize="44sp"
+            android:textColor="@color/countdown_color"
+            android:textStyle="bold" />
+    </LinearLayout>
 </FrameLayout>

@@ -44,7 +44,8 @@ public class AppUtility {
             date = sdf.parse(selectedDate);
 
             Calendar c = Calendar.getInstance();
-            String todayDate = sdf.format(c.getTime());
+            SimpleDateFormat todayFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+            String todayDate = todayFormat.format(new Date());
             Date currentTime = sdf.parse(todayDate);
 
             millis = getDateDiff(date, currentTime, TimeUnit.MILLISECONDS, Locale.getDefault());
