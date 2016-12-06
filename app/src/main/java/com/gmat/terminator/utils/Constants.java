@@ -9,4 +9,8 @@ public class Constants {
     public static final String MAX_DATE = "max_date";
     public static final String DATE_FORMAT = "date_format";
     public static final String KEY_DEFAULT_DOB = "default_dob";
+    public static final int NUMBER_OF_BOX_IN_ROW = 16;
+    public static final String FONT_FAMILY_SANS_SERIF = "sans-serif";
+    public static final String FONT_FAMILY_SANS_SERIF_LIGHT = "sans-serif-light";
+    public static final String FONT_FAMILY_SANS_SERIF_MEDIUM = "sans-serif-medium";
 }

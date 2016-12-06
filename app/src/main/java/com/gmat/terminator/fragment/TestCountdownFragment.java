@@ -31,6 +31,7 @@ public class TestCountdownFragment extends Fragment implements View.OnClickListe
     private TextView mSelectedDate, mSelectedTime, mCountdownTime, mCountdownLabel;
     private LinearLayout mCountDownTimerLyt, mPickdateLyt, mDateSelectorLyt, mTimeSelectorLyt, mChangeDateLyt;
     private RelativeLayout mPickTestDateLyt;
+    private TestCoundownTimer mCountDownTimer;
     private final long interval = 1 * 1000;
 
     @Override
@@ -103,8 +104,8 @@ public class TestCountdownFragment extends Fragment implements View.OnClickListe
 
                 long startTime = AppUtility.getCountdownTimerMillis(mSelectedDate.getText().toString() + " " +
                                 selectedHour + ":" + selectedMinute + ":" + "00");
-                TestCoundownTimer countDownTimer = new TestCoundownTimer(startTime, interval, TestCountdownFragment.this);
-                countDownTimer.start();
+                mCountDownTimer = new TestCoundownTimer(startTime, interval, TestCountdownFragment.this);
+                mCountDownTimer.start();
 
                 mCountDownTimerLyt.setVisibility(View.VISIBLE);
             }
@@ -244,6 +245,13 @@ public class TestCountdownFragment extends Fragment implements View.OnClickListe
             }
 
         });
+    }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(getActivity() != null && mCountDownTimer != null) {
+            mCountDownTimer.cancel();
+        }
     }
 }

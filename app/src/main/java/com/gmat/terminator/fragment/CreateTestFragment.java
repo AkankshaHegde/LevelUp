@@ -10,14 +10,17 @@ import android.view.ViewGroup;
 
 import com.gmat.terminator.R;
 import com.gmat.terminator.adapter.SectionsAdapter;
+import com.gmat.terminator.interfaces.ISectionClickListener;
+import com.gmat.terminator.utils.AppUtility;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by Akanksha on 16-Nov-16.
  */
 
-public class CreateTestFragment extends Fragment {
+public class CreateTestFragment extends Fragment implements ISectionClickListener {
     private RecyclerView mSectionsList;
     private SectionsAdapter mSectionsAdapter;
 
@@ -31,12 +34,18 @@ public class CreateTestFragment extends Fragment {
 
     private void initializeViews(View view) {
         mSectionsList = (RecyclerView) view.findViewById(R.id.sections_list);
+        int gridUnit = AppUtility.getScreenGridUnitBy32(getActivity());
+        mSectionsList.setPadding(gridUnit, gridUnit, gridUnit, gridUnit);
         mSectionsList.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        ArrayList<String> mSectionsArrayList = new ArrayList<>(R.array.sections_array);
-        mSectionsAdapter = new SectionsAdapter(getActivity(), mSectionsArrayList);
+        String [] mSectionsArray = getResources().getStringArray(R.array.sections_array);
+        ArrayList<String> mSectionsArrayList = new ArrayList<String>(Arrays.asList(mSectionsArray));
+        mSectionsAdapter = new SectionsAdapter(getActivity(), mSectionsArrayList, this);
         mSectionsList.setAdapter(mSectionsAdapter);
     }
 
+    @Override
+    public void onSectionClicked(String sectionName, String sectionType) {
 
+    }
 }

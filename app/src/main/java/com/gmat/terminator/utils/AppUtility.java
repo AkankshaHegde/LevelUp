@@ -1,12 +1,19 @@
 package com.gmat.terminator.utils;
 
+import android.app.Activity;
+import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Build;
+import android.util.DisplayMetrics;
+import android.widget.TextView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -58,4 +65,61 @@ public class AppUtility {
 
     }
 
+    public static int getScreenWidth(Activity activity) {
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        int width;
+        if (activity != null && !activity.isFinishing()) {
+            activity.getWindowManager().getDefaultDisplay()
+                    .getMetrics(displayMetrics);
+            width = displayMetrics.widthPixels;
+        } else {
+            width = 0;
+        }
+        return width;
+    }
+
+    public static int getScreenGridUnit(Context context) {
+        return getScreenWidth((Activity) context)
+                / Constants.NUMBER_OF_BOX_IN_ROW;
+    }
+
+    public static int getScreenGridUnitBy32(Context context) {
+        return getScreenWidth((Activity) context) / 32;
+    }
+
+    public static int setRandomColor() {
+        Random rnd = new Random();
+        int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+        return color;
+    }
+
+    public static void setRobotoMediumFont(Context context, TextView view,
+                                           int style) {
+        if (view == null)
+            return;
+
+
+        if (getOSVersion() >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            view.setTypeface(Typeface.create(Constants.FONT_FAMILY_SANS_SERIF_MEDIUM, Typeface.NORMAL));
+        } else {
+            view.setTypeface(null, Typeface.NORMAL);
+        }
+
+
+        //view.setTypeface(Typeface.create("sans-serif-condensed", Typeface.NORMAL));
+
+    }
+
+    public static void setRobotoBoldFont(Context context, TextView view,
+                                         int style) {
+        if (view == null)
+            return;
+
+
+        if (getOSVersion() >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            view.setTypeface(Typeface.create(Constants.FONT_FAMILY_SANS_SERIF, Typeface.BOLD));
+        } else {
+            view.setTypeface(null, Typeface.BOLD);
+        }
+    }
 }
