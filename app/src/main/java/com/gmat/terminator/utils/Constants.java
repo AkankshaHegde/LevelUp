@@ -13,4 +13,11 @@ public class Constants {
     public static final String FONT_FAMILY_SANS_SERIF = "sans-serif";
     public static final String FONT_FAMILY_SANS_SERIF_LIGHT = "sans-serif-light";
     public static final String FONT_FAMILY_SANS_SERIF_MEDIUM = "sans-serif-medium";
+
+    public static final String INTENT_EXTRA_FIRST_NAME = "first_name";
+    public static final String INTENT_EXTRA_LAST_NAME = "last_name";
+
+    public static final String PREF_NAME_WELCOME = "welcome_screen";
+    public static final String PREF_NAME_REGISTRATION = "register_screen";
+
 }

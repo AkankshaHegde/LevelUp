@@ -44,7 +44,7 @@ public class SectionsAdapter extends RecyclerView.Adapter<SectionsAdapter.ViewHo
             holder.mSectionLyt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mSectionClickListener.onSectionClicked(item, );
+                    //mSectionClickListener.onSectionClicked(item, );
                 }
             });
         }

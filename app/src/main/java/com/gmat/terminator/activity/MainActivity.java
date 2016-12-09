@@ -1,4 +1,4 @@
-package com.gmat.terminator;
+package com.gmat.terminator.activity;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.gmat.terminator.R;
 import com.gmat.terminator.fragment.TestCountdownFragment;
 import com.gmat.terminator.fragment.HistoryFragment;
 import com.gmat.terminator.fragment.QuestionTypeFragment;
