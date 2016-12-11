@@ -22,7 +22,7 @@
             android:layout_marginTop="20dp"
             android:paddingLeft="@dimen/desc_padding"
             android:paddingRight="@dimen/desc_padding"
-            android:text="You decide the date, we will set up test for you!"
+            android:text="Set a date when you are ready for the test!"
             android:textAlignment="center"
             android:textColor="@android:color/white"
             android:textSize="20dp" />
