@@ -2,6 +2,7 @@ package com.gmat.terminator.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,7 +21,7 @@ import android.widget.TextView;
 
 import com.gmat.terminator.R;
 import com.gmat.terminator.utils.Constants;
-import com.gmat.terminator.utils.PrefManager;
+import com.gmat.terminator.utils.SecureSharedPrefs;
 
 /**
  * Created by Akanksha on 09-Dec-16.
@@ -33,17 +34,24 @@ public class IntroSliderActivity extends AppCompatActivity {
     private TextView[] dots;
     private int[] layouts;
     private Button btnSkip, btnNext;
-    private PrefManager prefManager;
+    private SecureSharedPrefs prefs;
+    private boolean mIsFirstLaunch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         // Checking for first time launch - before calling setContentView()
-        prefManager = new PrefManager(this, Constants.PREF_NAME_WELCOME);
-        if (!prefManager.isWelcomeFirstTimeLaunch()) {
+        prefs = new SecureSharedPrefs(getApplicationContext());
+        mIsFirstLaunch = prefs.getBoolean(Constants.PREF_NAME_WELCOME, false);
+
+        if (mIsFirstLaunch) {
             launchHomeScreen();
             finish();
+        } else {
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putBoolean(Constants.PREF_NAME_WELCOME, true);
+            editor.commit();
         }
 
         // Making notification bar transparent
@@ -123,7 +131,6 @@ public class IntroSliderActivity extends AppCompatActivity {
     }
 
     private void launchHomeScreen() {
-        prefManager.setWelcomeFirstTimeLaunch(false);
         startActivity(new Intent(this, RegistrationActivity.class));
         finish();
     }

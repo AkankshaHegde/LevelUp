@@ -67,4 +67,101 @@
     <string name="first_name">First name</string>
     <string name="last_name">Last name</string>
 
+    <string-array name="section_quantitative">
+        <item>Algebra</item>
+        <item>Geometry</item>
+        <item>Number Properties</item>
+        <item>Word Problems</item>
+        <item>Fractions, Decimals &amp; Percents</item>
+    </string-array>
+
+    <string-array name="section_algebra">
+        <item>Algebra</item>
+        <item>Linear Equations</item>
+        <item>Exponents &amp; Roots</item>
+        <item>Quadratic Equations</item>
+        <item>Formulas</item>
+        <item>Inequalities</item>
+    </string-array>
+
+    <string-array name="section_geometry">
+        <item>Polygons</item>
+        <item>Triangles &amp; Diagonals</item>
+        <item>Circles &amp; Cylinders</item>
+        <item>Lines &amp; Angles</item>
+        <item>Coordinate Plane</item>
+    </string-array>
+
+    <string-array name="section_number_properties">
+        <item>Divisibility &amp; Primes</item>
+        <item>Odds &amp; Evens</item>
+        <item>Positives &amp; Negatives</item>
+        <item>Combinatorics</item>
+        <item>Probability</item>
+    </string-array>
+
+    <string-array name="section_word_problems">
+        <item>Algebraic Translations</item>
+        <item>Rates &amp; Work</item>
+        <item>Statistics</item>
+        <item>Consecutive Integers</item>
+        <item>Overlapping Sets</item>
+        <item>Extra Problem Types</item>
+    </string-array>
+
+    <string-array name="section_fractions_decimals">
+        <item>Digits &amp; Decimals</item>
+        <item>Fractions</item>
+        <item>Percents</item>
+        <item>Ratios</item>
+        <item>FDPs</item>
+    </string-array>
+
+    <string-array name="section_verbal">
+        <item>Critical Reasoning</item>
+        <item>Reading Comprehension</item>
+        <item>Sentence Correction</item>
+        <item>Ratios</item>
+        <item>FDPs</item>
+    </string-array>
+
+    <string-array name="section_critical_reasoning">
+        <item>Describe the Role</item>
+        <item>Find the Assumption</item>
+        <item>Evaluate the Argument</item>
+        <item>Strengthen the Argument</item>
+        <item>Weaken the Argument</item>
+        <item>Draw a Conclusion</item>
+        <item>Explain the Discrepancy</item>
+        <item>Restate the Conclusion</item>
+        <item>Resolve a Problem</item>
+        <item>Provide an Example</item>
+        <item>Mimic the Argument</item>
+        <item>Inference</item>
+    </string-array>
+
+    <string-array name="section_reading_comprehension">
+        <item>Inference</item>
+        <item>Specific Detail</item>
+        <item>Main Idea</item>
+        <item>Passage Structure</item>
+        <item>Tone</item>
+    </string-array>
+
+    <string-array name="section_sentence_correction">
+        <item>Subject-Verb Agreement</item>
+        <item>Pronouns</item>
+        <item>Modifiers</item>
+        <item>Verbs</item>
+        <item>Idioms</item>
+        <item>Concision</item>
+        <item>Meaning</item>
+        <item>Parallelism</item>
+        <item>Comparisons</item>
+        <item>Quantity</item>
+        <item>Connecting</item>
+        <item>Punctuation</item>
+    </string-array>
+
+
 </resources>

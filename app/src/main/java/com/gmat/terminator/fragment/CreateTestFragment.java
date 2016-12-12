@@ -11,10 +11,14 @@ import android.view.ViewGroup;
 import com.gmat.terminator.R;
 import com.gmat.terminator.adapter.SectionsAdapter;
 import com.gmat.terminator.interfaces.ISectionClickListener;
+import com.gmat.terminator.model.SectionModel;
+import com.gmat.terminator.other.RealmController;
 import com.gmat.terminator.utils.AppUtility;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+
+import io.realm.Realm;
 
 /**
  * Created by Akanksha on 16-Nov-16.
@@ -23,11 +27,16 @@ import java.util.Arrays;
 public class CreateTestFragment extends Fragment implements ISectionClickListener {
     private RecyclerView mSectionsList;
     private SectionsAdapter mSectionsAdapter;
+    private Realm mRealm;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_create_test, null);
+
+        //get realm instance
+        mRealm = RealmController.with(this).getRealm();
+
         initializeViews(view);
         return view;
     }
@@ -40,8 +49,21 @@ public class CreateTestFragment extends Fragment implements ISectionClickListene
 
         String [] mSectionsArray = getResources().getStringArray(R.array.sections_array);
         ArrayList<String> mSectionsArrayList = new ArrayList<String>(Arrays.asList(mSectionsArray));
+
+        for(int i=0 ; i < mSectionsArrayList.size(); i++) {
+            addItemToDatabase(mSectionsArrayList.get(i));
+        }
+
         mSectionsAdapter = new SectionsAdapter(getActivity(), mSectionsArrayList, this);
         mSectionsList.setAdapter(mSectionsAdapter);
+    }
+
+    private void addItemToDatabase(String sectionName) {
+        mRealm.beginTransaction();
+        SectionModel section = mRealm.createObject(SectionModel.class);
+        section.setSectionType("Topics");
+        section.setSectionName(sectionName);
+        mRealm.commitTransaction();
     }
 
     @Override

@@ -1,10 +1,14 @@
 package com.gmat.terminator.model;
 
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
 /**
  * Created by Akanksha on 06-Dec-16.
  */
 
-public class SectionModel {
+public class SectionModel extends RealmObject{
+    @PrimaryKey
     private String mSectionName;
     private String mSectionType;
     private String mSectionTime;

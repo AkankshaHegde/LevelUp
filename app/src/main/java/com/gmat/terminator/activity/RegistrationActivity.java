@@ -1,6 +1,7 @@
 package com.gmat.terminator.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -14,7 +15,7 @@ import android.widget.EditText;
 
 import com.gmat.terminator.R;
 import com.gmat.terminator.utils.Constants;
-import com.gmat.terminator.utils.PrefManager;
+import com.gmat.terminator.utils.SecureSharedPrefs;
 
 import static com.gmat.terminator.R.id.second_name;
 
@@ -25,17 +26,25 @@ import static com.gmat.terminator.R.id.second_name;
 public class RegistrationActivity extends AppCompatActivity implements View.OnClickListener, TextWatcher{
     private EditText mFirstName, mLastName;
     private Button mProceedBtn;
-    private PrefManager prefManager;
+    private SecureSharedPrefs prefs;
+    private boolean mIsFirstLaunch;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Checking for first time launch - before calling setContentView()
-        prefManager = new PrefManager(this, Constants.PREF_NAME_REGISTRATION);
-        if (prefManager.isRegisterFirstTimeLaunch()) {
+        prefs = new SecureSharedPrefs(getApplicationContext());
+        mIsFirstLaunch = prefs.getBoolean(Constants.PREF_NAME_REGISTRATION, false);
+
+        if (mIsFirstLaunch) {
             launchHomeScreen();
             finish();
+        } else {
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putBoolean(Constants.PREF_NAME_REGISTRATION, true);
+            editor.commit();
         }
+
 
         // Making notification bar transparent
         if (Build.VERSION.SDK_INT >= 21) {
@@ -48,7 +57,6 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     }
 
     private void launchHomeScreen() {
-        prefManager.setRegistrationFirstTimeLaunch(false);
         startActivity(new Intent(this, MainActivity.class));
         finish();
     }
