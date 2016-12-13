@@ -1,11 +1,14 @@
 package com.gmat.terminator.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.EditText;
 
 import com.gmat.terminator.R;
 import com.gmat.terminator.fragment.CreateTestFragment;
@@ -53,8 +56,7 @@ public class SelectTopicActivity extends AppCompatActivity {
                 mTopicName = intent.getStringExtra(Constants.INTENT_EXTRA_TOPIC_NAME);
             }
             if(intent.hasExtra(Constants.INTENT_EXTRA_TOPIC_LIST)) {
-                String[] mList = intent.getStringArrayExtra(Constants.INTENT_EXTRA_TOPIC_LIST);
-                mTopicList = (ArrayList<String>) Arrays.asList(mList);
+                mTopicList = intent.getStringArrayListExtra(Constants.INTENT_EXTRA_TOPIC_LIST);
             }
         }
     }
