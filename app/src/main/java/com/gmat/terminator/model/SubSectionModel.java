@@ -1,24 +1,35 @@
-package com.gmat.terminator.realm;
+package com.gmat.terminator.model;
 
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by Akanksha Hegde on 12-12-2016.
  */
 
 public class SubSectionModel extends RealmObject {
-    private String id;
+    @PrimaryKey
+    private String subSecId;
+    private String sectionId;
     private String name;
     private String type;
     private int numberOfQuestions;
     private int totalMilliSeconds;
 
-    public String getId() {
-        return id;
+    public String getsubSecId() {
+        return subSecId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setsubSecId(String subSectionId) {
+        this.subSecId = subSectionId;
+    }
+
+    public String getSectionId() {
+        return sectionId;
+    }
+
+    public void setSectionId(String sectionId) {
+        this.sectionId = sectionId;
     }
 
     public String getName() {
