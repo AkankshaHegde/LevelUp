@@ -25,5 +25,7 @@
 
         <activity android:name=".activity.MainActivity" />
         <activity android:name=".activity.SelectTopicActivity" />
+        <activity android:name=".activity.TimerActivity" />
+        <activity android:name=".activity.QuestionCountActivity" />
     </application>
 </manifest>

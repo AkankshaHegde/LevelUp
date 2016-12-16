@@ -76,7 +76,6 @@
     </string-array>
 
     <string-array name="section_algebra">
-        <item>Algebra</item>
         <item>Linear Equations</item>
         <item>Exponents &amp; Roots</item>
         <item>Quadratic Equations</item>
@@ -163,5 +162,7 @@
         <item>Punctuation</item>
     </string-array>
 
+    <string name="no_of_questions">Total number of questions</string>
+    <string name="time_per_section">Total time for this section</string>
 
 </resources>

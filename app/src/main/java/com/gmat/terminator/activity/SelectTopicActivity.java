@@ -1,21 +1,16 @@
 package com.gmat.terminator.activity;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.EditText;
 
 import com.gmat.terminator.R;
 import com.gmat.terminator.fragment.CreateTestFragment;
 import com.gmat.terminator.utils.Constants;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Created by Akanksha on 12-Dec-16.
@@ -26,15 +21,19 @@ public class SelectTopicActivity extends AppCompatActivity {
     private final String TAG_TEST_FRAGMENT = "test_fragment";
     private String mTopicName;
     private ArrayList<String> mTopicList;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        // Show status bar
-        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_select_topic);
+        setContentView(R.layout.select_topic_activity);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        toolbar.setNavigationIcon(R.drawable.back_arrow);
+
         getDataFromIntent();
 
         initializeFragment();
@@ -44,7 +43,7 @@ public class SelectTopicActivity extends AppCompatActivity {
         mCreateTestFragment = new CreateTestFragment();
         Bundle bundle = new Bundle();
         bundle.putString(Constants.INTENT_EXTRA_TOPIC_NAME, mTopicName);
-        bundle.putSerializable(Constants.INTENT_EXTRA_TOPIC_LIST, mTopicList);
+        bundle.putStringArrayList(Constants.INTENT_EXTRA_TOPIC_LIST, mTopicList);
         mCreateTestFragment.setArguments(bundle);
         getSupportFragmentManager().beginTransaction().add(R.id.topics_container, mCreateTestFragment, TAG_TEST_FRAGMENT).commit();
     }
@@ -54,6 +53,7 @@ public class SelectTopicActivity extends AppCompatActivity {
         if(intent != null) {
             if(intent.hasExtra(Constants.INTENT_EXTRA_TOPIC_NAME)) {
                 mTopicName = intent.getStringExtra(Constants.INTENT_EXTRA_TOPIC_NAME);
+                toolbar.setTitle(mTopicName);
             }
             if(intent.hasExtra(Constants.INTENT_EXTRA_TOPIC_LIST)) {
                 mTopicList = intent.getStringArrayListExtra(Constants.INTENT_EXTRA_TOPIC_LIST);

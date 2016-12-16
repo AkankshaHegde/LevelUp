@@ -1,20 +1,18 @@
 package com.gmat.terminator.fragment;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 
 import com.gmat.terminator.R;
+import com.gmat.terminator.activity.QuestionCountActivity;
 import com.gmat.terminator.activity.SelectTopicActivity;
+import com.gmat.terminator.activity.TimerActivity;
 import com.gmat.terminator.adapter.SectionsAdapter;
 import com.gmat.terminator.interfaces.ISectionClickListener;
 import com.gmat.terminator.model.SectionModel;
@@ -35,6 +33,8 @@ public class CreateTestFragment extends Fragment implements ISectionClickListene
     private RecyclerView mSectionsList;
     private SectionsAdapter mSectionsAdapter;
     private Realm mRealm;
+    private String mTopicName;
+    private ArrayList<String> mTopicList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -44,8 +44,21 @@ public class CreateTestFragment extends Fragment implements ISectionClickListene
         //get realm instance
         mRealm = RealmController.with(this).getRealm();
 
+        getDataFromIntent();
         initializeViews(view);
         return view;
+    }
+
+    private void getDataFromIntent() {
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            if (bundle.containsKey(Constants.INTENT_EXTRA_TOPIC_NAME)) {
+                mTopicName = (String) bundle.get(Constants.INTENT_EXTRA_TOPIC_NAME);
+            }
+            if (bundle.containsKey(Constants.INTENT_EXTRA_TOPIC_LIST)) {
+                mTopicList =  bundle.getStringArrayList(Constants.INTENT_EXTRA_TOPIC_LIST);
+            }
+        }
     }
 
     private void initializeViews(View view) {
@@ -54,8 +67,13 @@ public class CreateTestFragment extends Fragment implements ISectionClickListene
         mSectionsList.setPadding(gridUnit, gridUnit, gridUnit, gridUnit);
         mSectionsList.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        String [] mSectionsArray = getResources().getStringArray(R.array.sections_array);
-        ArrayList<String> mSectionsArrayList = new ArrayList<String>(Arrays.asList(mSectionsArray));
+        ArrayList<String> mSectionsArrayList;
+        if(mTopicList == null) {
+            String[] mSectionsArray = getResources().getStringArray(R.array.sections_array);
+            mSectionsArrayList = new ArrayList<String>(Arrays.asList(mSectionsArray));
+        } else {
+            mSectionsArrayList = mTopicList;
+        }
 
         /*//add top section names
         ArrayList<SectionModel> sections = new ArrayList<>();
@@ -133,9 +151,11 @@ public class CreateTestFragment extends Fragment implements ISectionClickListene
     }
 
     private void showQuestionCountDialog(String sectionName) {
-        AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+      /*  AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
 
         final EditText edittext = new EditText(getActivity());
+        int gridUnit = AppUtility.getScreenGridUnit(getActivity());
+        edittext.setPadding(gridUnit, 0, gridUnit, 0);
         alert.setMessage("Enter the average time in minutes to your question");
         //alert.setTitle("Enter Your Title");
 
@@ -144,17 +164,21 @@ public class CreateTestFragment extends Fragment implements ISectionClickListene
         alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 String value = edittext.getText().toString();
-
+                startTimerActivity(value);
             }
         });
 
-        alert.setNegativeButton("No Option", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                // what ever you want to do with No option.
-            }
-        });
+        alert.show();*/
 
-        alert.show();
+        Intent i = new Intent(getActivity(), QuestionCountActivity.class);
+        i.putExtra(Constants.INTENT_EXTRA_TOPIC_NAME, sectionName);
+        startActivity(i);
 
+    }
+
+    private void startTimerActivity(String value) {
+        Intent i = new Intent(getActivity(), TimerActivity.class);
+        i.putExtra(Constants.INTENT_EXTRA_TOTAL_TIME, value);
+        startActivity(i);
     }
 }
