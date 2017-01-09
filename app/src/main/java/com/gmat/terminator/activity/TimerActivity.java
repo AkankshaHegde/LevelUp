@@ -8,6 +8,7 @@ import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
@@ -38,6 +39,7 @@ public class TimerActivity extends AppCompatActivity implements View.OnClickList
     TextView questnCount, totalTimeTxt;
     RelativeLayout timerLyt;
     boolean isFirstClick = false;
+    private int previousSecs = 0;
 
 
     @Override
@@ -90,20 +92,26 @@ public class TimerActivity extends AppCompatActivity implements View.OnClickList
             handler.postDelayed(this, 0);
         }};
 
-    private void setTimerBackgroundColor(int secs) {
-        if(secs != 0) {
+    private void setTimerBackgroundColor(int inSecs) {
+        if(inSecs != 0) {
+            int secs = 0;
+            if(previousSecs != 0) {
+                secs = inSecs - previousSecs;
+            } else {
+                secs = inSecs;
+            }
             if(avgTimePerQuestn != 0) {
-                    if(secs > 10) {
-                        if(secs < (avgTimePerQuestn - 10) && !(secs >= avgTimePerQuestn)) {
-                            timerLyt.setBackgroundResource(R.drawable.timer_bg_green);
-                        } else if(secs <= avgTimePerQuestn && !(secs > avgTimePerQuestn)) {
-                            timerLyt.setBackgroundResource(R.drawable.timer_bg_orange);
-                        } else {
-                            timerLyt.setBackgroundResource(R.drawable.timer_bg_red);
-                        }
+                if(secs > 10) {
+                    if(secs < (avgTimePerQuestn - 10) && !(secs >= avgTimePerQuestn)) {
+                        timerLyt.setBackgroundResource(R.drawable.timer_bg_green);
+                    } else if(secs <= avgTimePerQuestn && !(secs > avgTimePerQuestn)) {
+                        timerLyt.setBackgroundResource(R.drawable.timer_bg_orange);
+                    } else {
+                        timerLyt.setBackgroundResource(R.drawable.timer_bg_red);
                     }
                 }
             }
+        }
     }
 
 
@@ -138,15 +146,25 @@ public class TimerActivity extends AppCompatActivity implements View.OnClickList
                 handleResetBtnClick();
                 break;
             case R.id.timer_lyt:
-                handleTimerLytClick();
+                if(!butnstart.getText().toString().equalsIgnoreCase("Start")) {
+                    handleTimerLytClick();
+                }
         }
     }
 
     private void handleTimerLytClick() {
         if(totalQuestnCount != 0) {
             questCount++;
-            if(questCount < totalQuestnCount) {
+            if(questCount <= totalQuestnCount) {
                 questnCount.setText(String.valueOf(questCount + "/" + totalQuestnCount));
+                previousSecs = secs;
+                if(questCount == totalQuestnCount) {
+                    timeSwapBuff += timeInMilliseconds;
+                    handler.removeCallbacks(updateTimer);
+                    t = 2;
+                    butnstart.setText("Start");
+                    time.setTextColor(Color.WHITE);
+                }
             }
         }
     }
@@ -175,12 +193,32 @@ public class TimerActivity extends AppCompatActivity implements View.OnClickList
             starttime = SystemClock.uptimeMillis();
             handler.postDelayed(updateTimer, 0);
             t = 0;
+        } else if(t == 2) {
+            handleResetBtnClick();
+            t = 1;
+            handleStartBtnClick();
         } else {
             butnstart.setText("Start");
             time.setTextColor(Color.WHITE);
             timeSwapBuff += timeInMilliseconds;
             handler.removeCallbacks(updateTimer);
             t = 1;
-        }}
+        }
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        if (menuItem.getItemId() == android.R.id.home) {
+            onBackPressed();
+        }
+        return super.onOptionsItemSelected(menuItem);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+}
+
+
 

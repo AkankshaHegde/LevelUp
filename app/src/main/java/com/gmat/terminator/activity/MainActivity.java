@@ -1,5 +1,7 @@
 package com.gmat.terminator.activity;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
@@ -22,13 +24,15 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.gmat.terminator.R;
-import com.gmat.terminator.fragment.TestCountdownFragment;
+import com.gmat.terminator.fragment.CreateTestFragment;
 import com.gmat.terminator.fragment.HistoryFragment;
 import com.gmat.terminator.fragment.QuestionTypeFragment;
 import com.gmat.terminator.fragment.StatsFragment;
 import com.gmat.terminator.fragment.TemplatesFragment;
-import com.gmat.terminator.fragment.CreateTestFragment;
+import com.gmat.terminator.fragment.TestCountdownFragment;
 import com.gmat.terminator.other.CircleTransform;
+import com.gmat.terminator.utils.Constants;
+import com.gmat.terminator.utils.SecureSharedPrefs;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -63,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
     // flag to load home fragment when user presses back key
     private boolean shouldLoadHomeFragOnBackPress = true;
     private Handler mHandler;
+    private SecureSharedPrefs prefs;
 
 
     @Override
@@ -115,9 +120,9 @@ public class MainActivity extends AppCompatActivity {
      * name, website, notifications action view (dot)
      */
     private void loadNavHeader() {
+        getDataFromIntent();
         // name, website
-        txtName.setText("Name");
-        txtWebsite.setText("website");
+        txtWebsite.setVisibility(View.GONE);
 
         // Loading profile image
         Glide.with(this).load(urlProfileImg)
@@ -129,6 +134,25 @@ public class MainActivity extends AppCompatActivity {
 
         // showing dot next to notifications label
         navigationView.getMenu().getItem(3).setActionView(R.layout.menu_dot);
+    }
+
+    private void getDataFromIntent() {
+        Intent intent = getIntent();
+        prefs = new SecureSharedPrefs(getApplicationContext());
+        if(intent != null) {
+            if(intent.hasExtra(Constants.INTENT_EXTRA_FIRST_NAME) && intent.hasExtra(Constants.INTENT_EXTRA_LAST_NAME)) {
+                txtName.setText(intent.getStringExtra(Constants.INTENT_EXTRA_FIRST_NAME) + " " + 
+                        intent.getStringExtra(Constants.INTENT_EXTRA_LAST_NAME));
+
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putString(Constants.PREF_NAME_USERNAME, intent.getStringExtra(Constants.INTENT_EXTRA_FIRST_NAME) + " " +
+                        intent.getStringExtra(Constants.INTENT_EXTRA_LAST_NAME));
+                editor.commit();
+            } else {
+                String username = prefs.getString(Constants.PREF_NAME_USERNAME, null);
+                txtName.setText(username);
+            }
+        }
     }
 
     /***
@@ -375,7 +399,7 @@ public class MainActivity extends AppCompatActivity {
     // show or hide the fab
     private void toggleFab() {
         if (navItemIndex == 0)
-            fab.show();
+            fab.hide();
         else
             fab.hide();
     }

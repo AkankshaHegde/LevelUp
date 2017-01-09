@@ -27,21 +27,21 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     private EditText mFirstName, mLastName;
     private Button mProceedBtn;
     private SecureSharedPrefs prefs;
-    private boolean mIsFirstLaunch;
+    private String mIsFirstLaunch;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Checking for first time launch - before calling setContentView()
         prefs = new SecureSharedPrefs(getApplicationContext());
-        mIsFirstLaunch = prefs.getBoolean(Constants.PREF_NAME_REGISTRATION, false);
+        mIsFirstLaunch = prefs.getString(Constants.PREF_NAME_REGISTRATION, null);
 
-        if (mIsFirstLaunch) {
+        if (mIsFirstLaunch != null) {
             launchHomeScreen();
             finish();
         } else {
             SharedPreferences.Editor editor = prefs.edit();
-            editor.putBoolean(Constants.PREF_NAME_REGISTRATION, true);
+            editor.putString(Constants.PREF_NAME_REGISTRATION, "isFirstLaunch");
             editor.commit();
         }
 

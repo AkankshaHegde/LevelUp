@@ -35,7 +35,7 @@ public class IntroSliderActivity extends AppCompatActivity {
     private int[] layouts;
     private Button btnSkip, btnNext;
     private SecureSharedPrefs prefs;
-    private boolean mIsFirstLaunch;
+    private String mIsFirstLaunch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,14 +43,14 @@ public class IntroSliderActivity extends AppCompatActivity {
 
         // Checking for first time launch - before calling setContentView()
         prefs = new SecureSharedPrefs(getApplicationContext());
-        mIsFirstLaunch = prefs.getBoolean(Constants.PREF_NAME_WELCOME, false);
+        mIsFirstLaunch = prefs.getString(Constants.PREF_NAME_WELCOME, null);
 
-        if (mIsFirstLaunch) {
+        if (mIsFirstLaunch != null) {
             launchHomeScreen();
             finish();
         } else {
             SharedPreferences.Editor editor = prefs.edit();
-            editor.putBoolean(Constants.PREF_NAME_WELCOME, true);
+            editor.putString(Constants.PREF_NAME_WELCOME, "isFirstLaunch");
             editor.commit();
         }
 

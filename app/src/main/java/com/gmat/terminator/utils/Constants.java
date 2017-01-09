@@ -19,6 +19,7 @@ public class Constants {
 
     public static final String PREF_NAME_WELCOME = "welcome_screen";
     public static final String PREF_NAME_REGISTRATION = "register_screen";
+    public static final String PREF_NAME_USERNAME = "user_name";
 
     public static final String INTENT_EXTRA_TOPIC_NAME = "topic_name";
     public static final String INTENT_EXTRA_TOPIC_LIST = "topic_list";

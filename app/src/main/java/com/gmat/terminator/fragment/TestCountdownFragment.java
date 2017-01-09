@@ -5,6 +5,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -26,6 +27,8 @@ import com.gmat.terminator.utils.AppUtility;
 import com.gmat.terminator.utils.Constants;
 
 import java.util.Calendar;
+
+import static com.gmat.terminator.activity.MainActivity.CURRENT_TAG;
 
 public class TestCountdownFragment extends Fragment implements View.OnClickListener, IDateSelection, ICountdownTime {
     private TextView mSelectedDate, mSelectedTime, mCountdownTime, mCountdownLabel;
@@ -151,6 +154,15 @@ public class TestCountdownFragment extends Fragment implements View.OnClickListe
             anim.setRepeatMode(Animation.REVERSE);
             anim.setRepeatCount(Animation.INFINITE);
             mCountdownTime.startAnimation(anim);
+
+
+            //Fragment fragment = getHomeFragment();
+            CreateTestFragment createTestFragment = new CreateTestFragment();
+            FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.setCustomAnimations(android.R.anim.fade_in,
+                    android.R.anim.fade_out);
+            fragmentTransaction.replace(R.id.frame, createTestFragment, CURRENT_TAG);
+            fragmentTransaction.commitAllowingStateLoss();
         }
     }
 

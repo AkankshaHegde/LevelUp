@@ -51,6 +51,9 @@
             android:textColorHint="@android:color/white"
             android:textColor="@android:color/white"
             android:hint="@string/first_name"
+            android:inputType="textPersonName"
+            android:imeOptions="actionNext"
+            android:nextFocusForward="@+id/second_name"
             android:backgroundTint="@color/colorPrimary"
             android:layout_marginTop="30dp"/>
 
@@ -61,9 +64,11 @@
             android:maxLines="1"
             android:gravity="center"
             android:layout_gravity="center"
+            android:imeOptions="actionDone"
             android:textColorHint="@android:color/white"
             android:textColor="@android:color/white"
             android:hint="@string/last_name"
+            android:inputType="textPersonName"
             android:backgroundTint="@color/colorPrimary"
             android:layout_marginTop="30dp"/>
 

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuItem;
 
 import com.gmat.terminator.R;
 import com.gmat.terminator.fragment.CreateTestFragment;
@@ -64,6 +65,14 @@ public class SelectTopicActivity extends AppCompatActivity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        if (menuItem.getItemId() == android.R.id.home) {
+           onBackPressed();
+        }
+        return super.onOptionsItemSelected(menuItem);
     }
 
     @Override
