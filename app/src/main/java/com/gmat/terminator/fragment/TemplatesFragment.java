@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.gmat.terminator.R;
+import com.gmat.terminator.activity.AddSectionInfoActivity;
 
 public class TemplatesFragment extends Fragment implements View.OnClickListener {
      private TextView mAddTemplateBtn;
@@ -71,7 +72,7 @@ public class TemplatesFragment extends Fragment implements View.OnClickListener 
         dialogButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getActivity(), )
+                Intent i = new Intent(getActivity(), AddSectionInfoActivity.class);
                 dialog.dismiss();
             }
         });
