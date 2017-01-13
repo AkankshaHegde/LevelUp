@@ -1,6 +1,6 @@
 package com.gmat.terminator.fragment;
 
-import android.app.Dialog;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,13 +8,13 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.gmat.terminator.R;
 import com.gmat.terminator.activity.AddSectionInfoActivity;
+import com.gmat.terminator.utils.Constants;
 
 public class TemplatesFragment extends Fragment implements View.OnClickListener {
      private TextView mAddTemplateBtn;
@@ -62,21 +62,33 @@ public class TemplatesFragment extends Fragment implements View.OnClickListener 
     }
 
     private void showAddTemplateDialog() {
-        final Dialog dialog = new Dialog(getActivity());
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setCancelable(false);
-        dialog.setContentView(R.layout.add_template_lyt);
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
 
-        EditText noOfSections = (EditText) dialog.findViewById(R.id.no_of_sections);
-        Button dialogButton = (Button) dialog.findViewById(R.id.proceed_btn);
+        final AlertDialog alertDialog = dialogBuilder.create();
+
+        //create custom view for the dialog
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.add_template_lyt, null);
+
+        alertDialog.setView(dialogView);
+        alertDialog.setCancelable(true);
+        alertDialog.setCanceledOnTouchOutside(true);
+
+        final EditText templateName = (EditText) dialogView.findViewById(R.id.template_name);
+        final EditText sectionCount = (EditText) dialogView.findViewById(R.id.no_of_sections);
+
+        Button dialogButton = (Button) dialogView.findViewById(R.id.proceed_btn);
         dialogButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getActivity(), AddSectionInfoActivity.class);
-                dialog.dismiss();
+                i.putExtra(Constants.INTENT_EXTRA_TEMPLATE_NAME, templateName.getText().toString());
+                i.putExtra(Constants.INTENT_EXTRA_SECTION_COUNT, sectionCount.getText().toString());
+                startActivity(i);
+                alertDialog.dismiss();
             }
         });
 
-        dialog.show();
+        alertDialog.show();
     }
 }

@@ -164,9 +164,10 @@
 
     <string name="no_of_questions">Total number of questions</string>
     <string name="time_per_section">Total time for this section</string>
-    <string name="no_of_sections">Total number of Sections</string>
+    <string name="no_of_sections">Number of Sections</string>
     <string name="section_name">Section Name</string>
     <string name="time_for_section">Time to complete this Section</string>
     <string name="breaktime_per_section">Breaktime per section</string>
+    <string name="template_name">Template Name</string>
 
 </resources>

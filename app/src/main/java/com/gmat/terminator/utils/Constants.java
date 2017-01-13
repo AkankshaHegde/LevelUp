@@ -25,5 +25,7 @@ public class Constants {
     public static final String INTENT_EXTRA_TOPIC_LIST = "topic_list";
     public static final String INTENT_EXTRA_TOTAL_TIME = "total_time";
     public static final String INTENT_EXTRA_TOTAL_QUESTION_COUNT = "total_questn_count";
+    public static final String INTENT_EXTRA_TEMPLATE_NAME = "intent_extra_template_name";
+    public static final String INTENT_EXTRA_SECTION_COUNT = "intent_extra_section_count";
 
 }

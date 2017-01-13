@@ -3,12 +3,19 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <include
+        android:id="@+id/toolbar_lyt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/toolbar_lyt" />
+
     <android.support.v7.widget.RecyclerView
-    android:id="@+id/sections_list"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:scrollbars="vertical"
-    android:background="@color/colorPrimaryDark"
-    android:clipToPadding="false"/>
+        android:id="@+id/sections_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"
+        android:paddingTop="10dp"
+        android:background="@color/colorPrimaryDark"
+        android:clipToPadding="false"/>
 
 </LinearLayout>
