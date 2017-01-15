@@ -9,19 +9,12 @@ import io.realm.annotations.PrimaryKey;
 
 public class SectionModel extends RealmObject{
     @PrimaryKey
-    private String mSectionId;
     private String mSectionName;
     private String mSectionType;
     private String mNoOfQuestions;
     private String mTimePerSection;
-
-    public String getmSectionId() {
-        return mSectionId;
-    }
-
-    public void setmSectionId(String mSectionId) {
-        this.mSectionId = mSectionId;
-    }
+    private String mNoOfSubSections;
+    private String templateName;
 
     public String getmSectionName() {
         return mSectionName;
@@ -53,5 +46,21 @@ public class SectionModel extends RealmObject{
 
     public void setmTimePerSection(String mTimePerSection) {
         this.mTimePerSection = mTimePerSection;
+    }
+
+    public String getTemplateName() {
+        return templateName;
+    }
+
+    public void setTemplateName(String templateName) {
+        this.templateName = templateName;
+    }
+
+    public String getmNoOfSubSections() {
+        return mNoOfSubSections;
+    }
+
+    public void setmNoOfSubSections(String mNoOfSubSections) {
+        this.mNoOfSubSections = mNoOfSubSections;
     }
 }

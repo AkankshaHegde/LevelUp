@@ -47,7 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:padding="10dp"
-            android:theme="@style/recharge_text_input_layout_theme">
+            android:theme="@style/edittext_theme">
 
             <EditText
                 android:id="@+id/first_name"
@@ -56,8 +56,8 @@
                 android:maxLines="1"
                 android:gravity="center"
                 android:layout_gravity="center"
-                android:textColorHint="@color/colorPrimary"
-                android:textColor="@android:color/white"
+                android:textColorHint="@android:color/transparent"
+                android:textColor="@color/colorPrimary"
                 android:hint="@string/first_name"
                 android:inputType="textPersonName"
                 android:imeOptions="actionNext"
@@ -67,29 +67,13 @@
 
         </android.support.design.widget.TextInputLayout>
 
-       <!-- <EditText
-            android:id="@+id/first_name"
-            android:layout_width="275dp"
-            android:layout_height="40sp"
-            android:maxLines="1"
-            android:gravity="center"
-            android:layout_gravity="center"
-            android:textColorHint="@android:color/white"
-            android:textColor="@android:color/white"
-            android:hint="@string/first_name"
-            android:inputType="textPersonName"
-            android:imeOptions="actionNext"
-            android:nextFocusForward="@+id/second_name"
-            android:backgroundTint="@color/colorPrimary"
-            android:layout_marginTop="30dp"/>-->
-
         <android.support.design.widget.TextInputLayout
             android:id="@+id/input_layout_second_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:padding="10dp"
-            android:theme="@style/recharge_text_input_layout_theme">
+            android:theme="@style/edittext_theme">
 
             <EditText
                 android:id="@+id/second_name"
@@ -98,29 +82,14 @@
                 android:gravity="center"
                 android:layout_gravity="center"
                 android:imeOptions="actionDone"
-                android:textColorHint="@android:color/white"
-                android:textColor="@android:color/white"
+                android:textColorHint="@android:color/transparent"
+                android:textColor="@color/colorPrimary"
                 android:hint="@string/last_name"
                 android:inputType="textPersonName"
                 android:backgroundTint="@color/colorPrimary"
                 android:layout_marginTop="20dp"/>
 
         </android.support.design.widget.TextInputLayout>
-
-       <!-- <EditText
-            android:id="@+id/second_name"
-            android:layout_width="275dp"
-            android:layout_height="40sp"
-            android:maxLines="1"
-            android:gravity="center"
-            android:layout_gravity="center"
-            android:imeOptions="actionDone"
-            android:textColorHint="@android:color/white"
-            android:textColor="@android:color/white"
-            android:hint="@string/last_name"
-            android:inputType="textPersonName"
-            android:backgroundTint="@color/colorPrimary"
-            android:layout_marginTop="30dp"/>-->
 
         <Button
             android:id="@+id/proceed_btn"
@@ -135,7 +104,6 @@
             android:visibility="gone"
             android:text="Gud Luck!"/>
     </LinearLayout>
-
 </RelativeLayout>
 
 

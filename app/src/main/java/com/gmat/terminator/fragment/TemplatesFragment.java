@@ -14,11 +14,19 @@ import android.widget.TextView;
 
 import com.gmat.terminator.R;
 import com.gmat.terminator.activity.AddSectionInfoActivity;
+import com.gmat.terminator.model.SectionModel;
+import com.gmat.terminator.model.TemplateModel;
 import com.gmat.terminator.utils.Constants;
+
+import java.util.ArrayList;
+
+import io.realm.Realm;
 
 public class TemplatesFragment extends Fragment implements View.OnClickListener {
      private TextView mAddTemplateBtn;
-       public TemplatesFragment() {
+    private Realm mRealm;
+
+    public TemplatesFragment() {
         // Required empty public constructor
     }
 
@@ -32,6 +40,7 @@ public class TemplatesFragment extends Fragment implements View.OnClickListener 
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_templates, null);
 
+        mRealm = Realm.getInstance(getActivity());
         initializeViews(view);
         return view;
     }
@@ -84,11 +93,32 @@ public class TemplatesFragment extends Fragment implements View.OnClickListener 
                 Intent i = new Intent(getActivity(), AddSectionInfoActivity.class);
                 i.putExtra(Constants.INTENT_EXTRA_TEMPLATE_NAME, templateName.getText().toString());
                 i.putExtra(Constants.INTENT_EXTRA_SECTION_COUNT, sectionCount.getText().toString());
+                addDataToRealm(templateName.getText().toString(), sectionCount.getText().toString());
                 startActivity(i);
                 alertDialog.dismiss();
             }
         });
 
         alertDialog.show();
+    }
+
+    private void addDataToRealm(String templateName, String sectionCount) {
+        TemplateModel model = new TemplateModel();
+        model.setTemplateName(templateName);
+        model.setNoOfSections(sectionCount);
+
+        /*for(int i=0; i < Integer.parseInt(sectionCount); i++) {
+            SectionModel sectionModel = new SectionModel();
+            sectionModel.setTemplateName(templateName);
+            sectionModel.setmSectionName("Section " + (i+1));
+
+            mRealm.beginTransaction();
+            mRealm.copyToRealm(sectionModel);
+            mRealm.commitTransaction();
+        }
+*/
+        mRealm.beginTransaction();
+        mRealm.copyToRealm(model);
+        mRealm.commitTransaction();
     }
 }

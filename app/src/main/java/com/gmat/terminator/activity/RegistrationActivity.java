@@ -14,8 +14,11 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.gmat.terminator.R;
+import com.gmat.terminator.model.AccountModel;
 import com.gmat.terminator.utils.Constants;
 import com.gmat.terminator.utils.SecureSharedPrefs;
+
+import io.realm.Realm;
 
 import static com.gmat.terminator.R.id.second_name;
 
@@ -28,6 +31,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     private Button mProceedBtn;
     private SecureSharedPrefs prefs;
     private String mIsFirstLaunch;
+    private Realm mRealm;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -35,6 +39,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         // Checking for first time launch - before calling setContentView()
         prefs = new SecureSharedPrefs(getApplicationContext());
         mIsFirstLaunch = prefs.getString(Constants.PREF_NAME_REGISTRATION, null);
+        mRealm = Realm.getInstance(getApplicationContext());
 
         if (mIsFirstLaunch != null) {
             launchHomeScreen();
@@ -89,10 +94,19 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     }
 
     private void handleProceedBtnClick() {
+        storeInRealmDatabase();
         Intent i = new Intent(RegistrationActivity.this, MainActivity.class);
         i.putExtra(Constants.INTENT_EXTRA_FIRST_NAME, mFirstName.getText().toString());
         i.putExtra(Constants.INTENT_EXTRA_LAST_NAME, mLastName.getText().toString());
         startActivity(i);
+    }
+
+    private void storeInRealmDatabase() {
+        mRealm.beginTransaction();
+        AccountModel accountModel = mRealm.createObject(AccountModel.class);
+        accountModel.setFirstName(mFirstName.getText().toString());
+        accountModel.setLastName(mLastName.getText().toString());
+        mRealm.commitTransaction();
     }
 
     @Override
@@ -108,5 +122,11 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     @Override
     public void afterTextChanged(Editable editable) {
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mRealm.close();
     }
 }

@@ -94,7 +94,7 @@ public class CreateTestFragment extends Fragment implements ISectionClickListene
 
     private SectionModel setRealmData(String sectionType, String sectionName) {
         SectionModel section = new SectionModel();
-        section.setmSectionId(sectionType + sectionName);
+        //section.setmSectionId(sectionType + sectionName);
         section.setmSectionName(sectionName);
         section.setmSectionType(sectionType);
         return section;

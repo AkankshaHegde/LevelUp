@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:theme="@style/recharge_text_input_layout_theme">
+        android:theme="@style/edittext_theme">
 
         <EditText
             android:id="@+id/template_name"
@@ -23,11 +23,52 @@
             android:hint="@string/template_name"
             android:inputType="textPersonName"
             android:imeOptions="actionNext"
+            android:nextFocusForward="@+id/no_of_sections"
             android:textColorHint="@android:color/transparent"
             android:backgroundTint="@color/colorPrimary"
             android:layout_marginTop="30dp" />
 
     </android.support.design.widget.TextInputLayout>
+
+    <TextView
+        android:id="@+id/radio_btn_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:layout_marginTop="10dp"
+        android:visibility="gone"
+        android:text="Has further Sub Sections?"/>
+
+    <RadioGroup
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="1"
+        android:layout_marginTop="20dp"
+        android:visibility="gone"
+        android:id="@+id/hasSubSectionsRadioGrp">
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Yes"
+            android:id="@+id/hasSubSection"
+            android:layout_gravity="left"
+            android:checked="false"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20sp" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No"
+            android:id="@+id/hasNoSubSection"
+            android:layout_gravity="left"
+            android:checked="false"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20sp"
+            android:layout_weight="0.13" />
+    </RadioGroup>
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/input_layout_no_of_sections"
@@ -35,7 +76,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
-        android:theme="@style/recharge_text_input_layout_theme">
+        android:visibility="visible"
+        android:theme="@style/edittext_theme">
 
         <EditText
             android:id="@+id/no_of_sections"
@@ -47,8 +89,8 @@
             android:textColorHint="@android:color/transparent"
             android:textColor="@color/colorPrimary"
             android:hint="@string/no_of_sections"
-            android:inputType="textPersonName"
-            android:imeOptions="actionNext"
+            android:inputType="number"
+            android:imeOptions="actionDone"
             android:backgroundTint="@color/colorPrimary"
             android:layout_marginTop="30dp" />
 

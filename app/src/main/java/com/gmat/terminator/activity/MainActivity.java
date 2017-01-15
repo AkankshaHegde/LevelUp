@@ -30,9 +30,13 @@ import com.gmat.terminator.fragment.QuestionTypeFragment;
 import com.gmat.terminator.fragment.StatsFragment;
 import com.gmat.terminator.fragment.TemplatesFragment;
 import com.gmat.terminator.fragment.TestCountdownFragment;
+import com.gmat.terminator.model.AccountModel;
 import com.gmat.terminator.other.CircleTransform;
 import com.gmat.terminator.utils.Constants;
 import com.gmat.terminator.utils.SecureSharedPrefs;
+
+import io.realm.Realm;
+import io.realm.RealmResults;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -63,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
 
     // toolbar titles respected to selected nav menu item
     private String[] activityTitles;
+    private Realm mRealm;
 
     // flag to load home fragment when user presses back key
     private boolean shouldLoadHomeFragOnBackPress = true;
@@ -137,7 +142,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getDataFromIntent() {
-        Intent intent = getIntent();
+        getDataFromRealm();
+       /* Intent intent = getIntent();
         prefs = new SecureSharedPrefs(getApplicationContext());
         if(intent != null) {
             if(intent.hasExtra(Constants.INTENT_EXTRA_FIRST_NAME) && intent.hasExtra(Constants.INTENT_EXTRA_LAST_NAME)) {
@@ -152,6 +158,15 @@ public class MainActivity extends AppCompatActivity {
                 String username = prefs.getString(Constants.PREF_NAME_USERNAME, null);
                 txtName.setText(username);
             }
+        }*/
+    }
+
+    private void getDataFromRealm() {
+        mRealm = Realm.getInstance(getApplicationContext());
+        RealmResults<AccountModel> accountRealmResults = mRealm.allObjects(AccountModel.class);
+        for(AccountModel model : accountRealmResults) {
+            txtName.setText(model.getFirstName() + " " +
+                    model.getLastName());
         }
     }
 

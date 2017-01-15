@@ -9,35 +9,19 @@ import io.realm.annotations.PrimaryKey;
 
 public class SubSectionModel extends RealmObject {
     @PrimaryKey
-    private String subSecId;
-    private String sectionId;
-    private String name;
+    private String subSecName;
     private String type;
     private int numberOfQuestions;
     private int totalMilliSeconds;
+    private String templateName;
+    private String mSectionName;
 
-    public String getsubSecId() {
-        return subSecId;
+    public String getsubSecName() {
+        return subSecName;
     }
 
-    public void setsubSecId(String subSectionId) {
-        this.subSecId = subSectionId;
-    }
-
-    public String getSectionId() {
-        return sectionId;
-    }
-
-    public void setSectionId(String sectionId) {
-        this.sectionId = sectionId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public void setsubSecName(String subSecName) {
+        this.subSecName = subSecName;
     }
 
     public String getType() {
@@ -62,5 +46,21 @@ public class SubSectionModel extends RealmObject {
 
     public void setTotalMilliSeconds(int totalMilliSeconds) {
         this.totalMilliSeconds = totalMilliSeconds;
+    }
+
+    public String getTemplateName() {
+        return templateName;
+    }
+
+    public void setTemplateName(String templateName) {
+        this.templateName = templateName;
+    }
+
+    public String getmSectionName() {
+        return mSectionName;
+    }
+
+    public void setmSectionName(String mSectionName) {
+        this.mSectionName = mSectionName;
     }
 }
