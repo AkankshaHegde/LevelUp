@@ -6,7 +6,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -16,9 +18,13 @@ import android.widget.TextView;
 
 import com.gmat.terminator.R;
 import com.gmat.terminator.adapter.AddSectionNameAdapter;
+import com.gmat.terminator.model.SectionModel;
+import com.gmat.terminator.model.TemplateModel;
 import com.gmat.terminator.utils.Constants;
 
 import java.util.ArrayList;
+
+import io.realm.Realm;
 
 /**
  * Created by Akanksha on 16-Jan-17.
@@ -27,19 +33,24 @@ import java.util.ArrayList;
 public class SectionInfoDialog extends AppCompatActivity implements View.OnClickListener {
 
     private EditText templateNameEditText, sectionCountEditText;
-    private boolean isTemplate;
+    private boolean isTemplate, hasSections;
     private String sectionName;
     private TextView mAddSection, mRemoveSection, mSectionCount;
     private LinearLayout mAddSectionLyt;
     private ArrayList<String> mSectionsArraylist;
     private AddSectionNameAdapter mAddSectionNameAdapter;
     private RelativeLayout mAddSectionHandlerLyt;
+    private Button mProceedBtn;
+    private RadioGroup group;
+    private Realm mRealm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_template_lyt);
         getSupportActionBar().hide();
+
+        mRealm = Realm.getInstance(this);
 
         getDataFromIntent();
         //initialise views
@@ -70,10 +81,12 @@ public class SectionInfoDialog extends AppCompatActivity implements View.OnClick
         mRemoveSection = (TextView) findViewById(R.id.decrease_section);
         mRemoveSection.setOnClickListener(this);
 
+        mProceedBtn = (Button) findViewById(R.id.proceed_btn);
+        mProceedBtn.setOnClickListener(this);
     }
 
     private void addSectionView() {
-        mSectionsArraylist.add("Section");
+        mSectionsArraylist.add("");
 
         addChildToLinearLayout();
     }
@@ -109,7 +122,7 @@ public class SectionInfoDialog extends AppCompatActivity implements View.OnClick
         TextInputLayout sectionNameLyt = (TextInputLayout) findViewById(R.id.input_layout_template_name);
         final TextInputLayout sectionCountLyt = (TextInputLayout) findViewById(R.id.input_layout_no_of_sections);
         TextView radionBtnLabel = (TextView) findViewById(R.id.radio_btn_label);
-        RadioGroup group = (RadioGroup) findViewById(R.id.hasSubSectionsRadioGrp);
+        group = (RadioGroup) findViewById(R.id.hasSubSectionsRadioGrp);
 
         setTitleEditTextHint(sectionNameLyt);
         sectionCountLyt.setHint("Number of Sub Sections");
@@ -159,11 +172,14 @@ public class SectionInfoDialog extends AppCompatActivity implements View.OnClick
                         //sectionCount.setVisibility(View.VISIBLE);
                         mAddSectionHandlerLyt.setVisibility(View.VISIBLE);
                         mAddSectionLyt.setVisibility(View.VISIBLE);
+                        hasSections = true;
                         break;
                     case R.id.hasNoSubSection:
                         //sectionCount.setVisibility(View.GONE);
                         mAddSectionHandlerLyt.setVisibility(View.GONE);
                         mAddSectionLyt.setVisibility(View.GONE);
+                        hasSections = false;
+
                         break;
                 }
             }
@@ -189,6 +205,46 @@ public class SectionInfoDialog extends AppCompatActivity implements View.OnClick
             case R.id.decrease_section:
                 handleDeccrementSectionClick();
                 break;
+            case R.id.proceed_btn:
+                feedListToDatabase();
+        }
+    }
+
+    private void startSectionsActivity() {
+        Intent intent = new Intent(SectionInfoDialog.this, AddSectionInfoActivity.class);
+        intent.putExtra(Constants.INTENT_EXTRA_TEMPLATE_NAME, templateNameEditText.getText().toString());
+        startActivity(intent);
+    }
+
+    private void feedListToDatabase() {
+        if (isTemplate) {
+            TemplateModel templateModel = new TemplateModel();
+
+            if (templateNameEditText != null &&
+                    !TextUtils.isEmpty(templateNameEditText.getText().toString())) {
+                templateModel.setTemplateName(templateNameEditText.getText().toString());
+            } else {
+                //add shake animation
+                return;
+            }
+
+            if (hasSections) {
+                if (mSectionsArraylist != null && mSectionsArraylist.size() > 0)
+                    templateModel.setNoOfSections(String.valueOf(mSectionsArraylist.size()));
+
+                for (int i = 0; i < mSectionsArraylist.size(); i++) {
+                    SectionModel sectionModel = new SectionModel();
+                    sectionModel.setmSectionName(mSectionsArraylist.get(i));
+
+                    mRealm.beginTransaction();
+                    mRealm.copyToRealm(sectionModel);
+                    mRealm.commitTransaction();
+                }
+                mRealm.beginTransaction();
+                mRealm.copyToRealm(templateModel);
+                mRealm.commitTransaction();
+            }
+            startSectionsActivity();
         }
     }
 

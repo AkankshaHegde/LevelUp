@@ -30,6 +30,7 @@ import com.gmat.terminator.utils.Constants;
 import java.util.ArrayList;
 
 import io.realm.Realm;
+import io.realm.RealmList;
 
 import static android.support.v7.appcompat.R.id.radio;
 
@@ -79,12 +80,17 @@ public class AddSectionInfoActivity extends AppCompatActivity implements ISectio
         toolbar.setTitle(templateName);
         TemplateModel templateModel = mRealm.where(TemplateModel.class).equalTo("templateName", templateName).findFirst();
 
-        sectionCount = Integer.parseInt(intent.getStringExtra(Constants.INTENT_EXTRA_SECTION_COUNT));
+        RealmList<SectionModel> sectionModelList = templateModel.getmSectionsList();
         mSectionsArrayList = new ArrayList<>();
 
-        for(int i = 0; i < sectionCount; i++) {
-            mSectionsArrayList.add("Section " + i);
+        for (SectionModel model : sectionModelList) {
+            mSectionsArrayList.add(model.getmSectionName());
         }
+        sectionCount = Integer.parseInt(intent.getStringExtra(Constants.INTENT_EXTRA_SECTION_COUNT));
+
+        /*for(int i = 0; i < sectionCount; i++) {
+            mSectionsArrayList.add("Section " + i);
+        }*/
     }
 
     private void showAddTemplateDialog(final String sectionName) {

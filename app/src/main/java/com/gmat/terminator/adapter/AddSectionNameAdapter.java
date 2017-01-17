@@ -78,7 +78,7 @@ public class AddSectionNameAdapter extends BaseAdapter {
 
     private void setViewHolder(final ViewHolder holder, int position) {
         holder.mSectionLabel.setText("Section " + (position + 1));
-
+        holder.mSectionsEditTxt.setText(mSectionsArraylist.get(position));
 
         //textwatcher for section name edittext
         holder.mSectionsEditTxt.addTextChangedListener(new TextWatcher() {

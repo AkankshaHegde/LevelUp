@@ -1,5 +1,6 @@
 package com.gmat.terminator.model;
 
+import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -12,6 +13,7 @@ public class TemplateModel extends RealmObject {
     @PrimaryKey
     private String templateName;
     private String noOfSections;
+    private RealmList<SectionModel> mSectionsList;
 
     public String getTemplateName() {
         return templateName;
@@ -27,5 +29,13 @@ public class TemplateModel extends RealmObject {
 
     public void setNoOfSections(String noOfSections) {
         this.noOfSections = noOfSections;
+    }
+
+    public RealmList<SectionModel> getmSectionsList() {
+        return mSectionsList;
+    }
+
+    public void setmSectionsList(RealmList<SectionModel> mSectionsList) {
+        this.mSectionsList = mSectionsList;
     }
 }
