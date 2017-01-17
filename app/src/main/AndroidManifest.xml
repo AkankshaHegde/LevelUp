@@ -21,6 +21,9 @@
         <activity android:name=".activity.TimerActivity" />
         <activity android:name=".activity.QuestionCountActivity" />
         <activity android:name=".activity.AddSectionInfoActivity" />
+        <activity android:name=".activity.SectionInfoDialog"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.SectionDialog"/>
 
     </application>
 

@@ -1,6 +1,5 @@
 package com.gmat.terminator.fragment;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,17 +7,12 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.gmat.terminator.R;
-import com.gmat.terminator.activity.AddSectionInfoActivity;
-import com.gmat.terminator.model.SectionModel;
+import com.gmat.terminator.activity.SectionInfoDialog;
 import com.gmat.terminator.model.TemplateModel;
 import com.gmat.terminator.utils.Constants;
-
-import java.util.ArrayList;
 
 import io.realm.Realm;
 
@@ -71,7 +65,11 @@ public class TemplatesFragment extends Fragment implements View.OnClickListener 
     }
 
     private void showAddTemplateDialog() {
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
+        Intent i = new Intent(getActivity(), SectionInfoDialog.class);
+        i.putExtra(Constants.INTENT_EXTRA_IS_TEMPLATE, true);
+        startActivity(i);
+
+       /* AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
 
         final AlertDialog alertDialog = dialogBuilder.create();
 
@@ -99,7 +97,7 @@ public class TemplatesFragment extends Fragment implements View.OnClickListener 
             }
         });
 
-        alertDialog.show();
+        alertDialog.show();*/
     }
 
     private void addDataToRealm(String templateName, String sectionCount) {
