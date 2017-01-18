@@ -81,7 +81,7 @@ public class AddSectionNameAdapter extends BaseAdapter {
 
     private void setViewHolder(final ViewHolder holder, final int position) {
         if(TextUtils.isEmpty(mSectionsArraylist.get(position))) {
-            holder.mSectionLabel.setText("Section " + (position + 1));
+            holder.mSectionLabel.setText("Type " + (position + 1));
         } else {
             holder.mSectionLabel.setText(mSectionsArraylist.get(position));
         }

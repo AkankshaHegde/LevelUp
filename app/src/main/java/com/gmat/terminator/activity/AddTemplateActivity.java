@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.gmat.terminator.R;
@@ -30,16 +31,16 @@ import io.realm.Realm;
 
 public class AddTemplateActivity extends AppCompatActivity implements View.OnClickListener, SectionClickListener {
     private Toolbar toolbar;
-    private EditText breaktimeEditText;
-    private TextView mAddSection, mRemoveSection;
+    private EditText breaktimeEditText, mSectionCount;
+    private TextView mAddSection, mRemoveSection, mAddBreakTime, mRemoveBreaktime;
     private LinearLayout mAddSectionLyt;
     private ArrayList<String> mSectionsArraylist;
     private AddSectionNameAdapter mAddSectionNameAdapter;
     private Button mProceedBtn;
     private Realm mRealm;
-    private TextView mSectionCount;
+    //private TextView mSectionCount;
     private String templateName;
-    private TextInputLayout mBreaktimeLyt;
+    private RelativeLayout mBreaktimeLyt;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,9 +61,9 @@ public class AddTemplateActivity extends AppCompatActivity implements View.OnCli
 
     private void initializeViews() {
         breaktimeEditText = (EditText) findViewById(R.id.break_time);
-        mBreaktimeLyt = (TextInputLayout) findViewById(R.id.input_layout_break_time);
+        mBreaktimeLyt = (RelativeLayout) findViewById(R.id.input_layout_break_time);
 
-        mSectionCount = (TextView) findViewById(R.id.section_count);
+        mSectionCount = (EditText) findViewById(R.id.section_count);
 
         mAddSectionLyt = (LinearLayout) findViewById(R.id.sections_linear_lyt);
 
@@ -82,6 +83,12 @@ public class AddTemplateActivity extends AppCompatActivity implements View.OnCli
 
         mProceedBtn = (Button) findViewById(R.id.add_template_btn);
         mProceedBtn.setOnClickListener(this);
+
+        mAddBreakTime = (TextView) findViewById(R.id.increase_break_section);
+        mAddBreakTime.setOnClickListener(this);
+
+        mRemoveBreaktime = (TextView) findViewById(R.id.decrease_break_section);
+        mRemoveBreaktime.setOnClickListener(this);
     }
 
     private void getDataFromIntent() {
@@ -104,6 +111,43 @@ public class AddTemplateActivity extends AppCompatActivity implements View.OnCli
                 break;
             case R.id.proceed_btn:
                 //feedListToDatabase();
+                break;
+            case R.id.increase_break_section :
+                handleIncrementBreakClick();
+                break;
+            case R.id.decrease_break_section:
+                handleDecrementBreakClick();
+                break;
+        }
+    }
+
+    private void handleDecrementBreakClick() {
+        if(breaktimeEditText != null && breaktimeEditText.getText()!= null) {
+            int breaktime = Integer.parseInt(breaktimeEditText.getText().toString());
+            if(breaktime > 1) {
+                breaktime--;
+                breaktimeEditText.setText(breaktime+"");
+
+                if(breaktime == 1) {
+                    disableDecrementBtn(mRemoveBreaktime, true);
+                } else {
+                    disableDecrementBtn(mRemoveBreaktime, false);
+                }
+            } else {
+                disableDecrementBtn(mRemoveBreaktime, true);
+            }
+        }
+    }
+
+    private void handleIncrementBreakClick() {
+        if(breaktimeEditText != null && breaktimeEditText.getText()!= null) {
+            int breaktime = Integer.parseInt(breaktimeEditText.getText().toString());
+            if(breaktime >= 1) {
+                breaktime++;
+                disableDecrementBtn(mRemoveBreaktime, false);
+
+                breaktimeEditText.setText(breaktime+"");
+            }
         }
     }
 
@@ -112,7 +156,7 @@ public class AddTemplateActivity extends AppCompatActivity implements View.OnCli
             int sectionCount = Integer.parseInt(mSectionCount.getText().toString());
             if(sectionCount >= 1) {
                 sectionCount++;
-                disableDecrementBtn(false);
+                disableDecrementBtn(mRemoveSection, false);
 
                 mSectionCount.setText(sectionCount+"");
                 addSectionView();
@@ -128,30 +172,30 @@ public class AddTemplateActivity extends AppCompatActivity implements View.OnCli
                 mSectionCount.setText(sectionCount+"");
 
                 if(sectionCount == 1) {
-                    disableDecrementBtn(true);
+                    disableDecrementBtn(mRemoveSection, true);
                 } else {
-                    disableDecrementBtn(false);
+                    disableDecrementBtn(mRemoveSection, false);
                 }
                 removeSectionView();
             } else {
-                disableDecrementBtn(true);
+                disableDecrementBtn(mRemoveSection, true);
             }
         }
     }
 
-    private void disableDecrementBtn(boolean isDisable) {
+    private void disableDecrementBtn(TextView decrementBtn, boolean isDisable) {
         if(isDisable) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                mRemoveSection.setTextColor(getResources().getColor(R.color.gray, null));
+                decrementBtn.setTextColor(getResources().getColor(R.color.gray, null));
             } else {
-                mRemoveSection.setTextColor(getResources().getColor(R.color.gray));
+                decrementBtn.setTextColor(getResources().getColor(R.color.gray));
             }
             mBreaktimeLyt.setVisibility(View.GONE);
         } else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                mRemoveSection.setTextColor(getResources().getColor(R.color.colorPrimary, null));
+                decrementBtn.setTextColor(getResources().getColor(R.color.colorPrimary, null));
             } else {
-                mRemoveSection.setTextColor(getResources().getColor(R.color.colorPrimary));
+                decrementBtn.setTextColor(getResources().getColor(R.color.colorPrimary));
             }
             mBreaktimeLyt.setVisibility(View.VISIBLE);
 

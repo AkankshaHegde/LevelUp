@@ -24,7 +24,8 @@
         <activity android:name=".activity.SectionInfoDialog"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.SectionDialog"/>
-        <activity android:name=".activity.AddTemplateActivity"/>
+        <activity android:name=".activity.AddTemplateActivity"
+            android:windowSoftInputMode="stateAlwaysHidden"/>
 
     </application>
 
