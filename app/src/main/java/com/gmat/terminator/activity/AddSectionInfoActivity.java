@@ -1,6 +1,5 @@
 package com.gmat.terminator.activity;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Build;
@@ -10,11 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -31,8 +26,6 @@ import java.util.ArrayList;
 
 import io.realm.Realm;
 import io.realm.RealmList;
-
-import static android.support.v7.appcompat.R.id.radio;
 
 /**
  * Created by Akanksha Hegde on 12-01-2017.
@@ -77,7 +70,7 @@ public class AddSectionInfoActivity extends AppCompatActivity implements ISectio
     private void getDataFromIntent() {
         Intent intent = getIntent();
         templateName = intent.getStringExtra(Constants.INTENT_EXTRA_TEMPLATE_NAME);
-        toolbar.setTitle(templateName);
+        getSupportActionBar().setTitle(templateName);
         TemplateModel templateModel = mRealm.where(TemplateModel.class).equalTo("templateName", templateName).findFirst();
 
         RealmList<SectionModel> sectionModelList = templateModel.getmSectionsList();
@@ -86,7 +79,7 @@ public class AddSectionInfoActivity extends AppCompatActivity implements ISectio
         for (SectionModel model : sectionModelList) {
             mSectionsArrayList.add(model.getmSectionName());
         }
-        sectionCount = Integer.parseInt(intent.getStringExtra(Constants.INTENT_EXTRA_SECTION_COUNT));
+        //sectionCount = Integer.parseInt(intent.getStringExtra(Constants.INTENT_EXTRA_SECTION_COUNT));
 
         /*for(int i = 0; i < sectionCount; i++) {
             mSectionsArrayList.add("Section " + i);
@@ -94,7 +87,7 @@ public class AddSectionInfoActivity extends AppCompatActivity implements ISectio
     }
 
     private void showAddTemplateDialog(final String sectionName) {
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        /*AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
 
         final AlertDialog alertDialog = dialogBuilder.create();
 
@@ -124,7 +117,14 @@ public class AddSectionInfoActivity extends AppCompatActivity implements ISectio
             }
         });
 
-        alertDialog.show();
+        alertDialog.show();*/
+
+        Intent i = new Intent(this, SectionInfoDialog.class);
+        i.putExtra(Constants.INTENT_EXTRA_IS_TEMPLATE, false);
+        i.putExtra(Constants.INTENT_EXTRA_TEMPLATE_NAME, templateName);
+        i.putExtra(Constants.INTENT_EXTRA_SECTION_NAME, sectionName);
+
+        startActivity(i);
     }
 
     private void setDataToDatabase(String sectionName, String subSectionCount, String templateName, String previousSecName) {

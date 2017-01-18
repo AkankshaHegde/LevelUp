@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark"
+    android:padding="10dp">
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_layout_section_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:visibility="visible"
+        android:theme="@style/edittext_theme">
+
+        <EditText
+            android:id="@+id/section_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:gravity="left"
+            android:layout_gravity="center"
+            android:textColor="@color/colorPrimary"
+            android:hint="Section Name"
+            android:inputType="textPersonName"
+            android:imeOptions="actionNext"
+            android:textColorHint="@android:color/transparent"
+            android:backgroundTint="@color/colorPrimary"
+            android:layout_marginTop="30dp" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_layout_no_of_sections"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:visibility="visible"
+        android:theme="@style/edittext_theme">
+
+        <EditText
+            android:id="@+id/no_of_sections"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:gravity="left"
+            android:layout_gravity="center"
+            android:textColor="@color/colorPrimary"
+            android:hint="No. of Questions "
+            android:inputType="textPersonName"
+            android:imeOptions="actionNext"
+            android:textColorHint="@android:color/transparent"
+            android:backgroundTint="@color/colorPrimary"
+            android:layout_marginTop="30dp" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_layout_total_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:visibility="visible"
+        android:theme="@style/edittext_theme">
+
+        <EditText
+            android:id="@+id/total_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:gravity="left"
+            android:layout_gravity="center"
+            android:textColor="@color/colorPrimary"
+            android:hint="Total Time"
+            android:inputType="textPersonName"
+            android:imeOptions="actionNext"
+            android:textColorHint="@android:color/transparent"
+            android:backgroundTint="@color/colorPrimary"
+            android:layout_marginTop="30dp" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <Button
+        android:id="@+id/done_btn"
+        android:layout_width="wrap_content"
+        android:padding="10dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:gravity="center"
+        android:visibility="visible"
+        android:textAllCaps="true"
+        android:layout_margin="10dp"
+        android:background="@color/colorPrimary"
+        android:textColor="@color/white"
+        android:text="Done"/>
+
+</LinearLayout>

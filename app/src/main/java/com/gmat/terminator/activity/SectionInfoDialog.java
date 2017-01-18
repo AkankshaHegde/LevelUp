@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,6 +26,7 @@ import com.gmat.terminator.utils.Constants;
 import java.util.ArrayList;
 
 import io.realm.Realm;
+import io.realm.RealmList;
 
 /**
  * Created by Akanksha on 16-Jan-17.
@@ -34,7 +36,7 @@ public class SectionInfoDialog extends AppCompatActivity implements View.OnClick
 
     private EditText templateNameEditText, sectionCountEditText;
     private boolean isTemplate, hasSections;
-    private String sectionName;
+    private String sectionName, templateName;
     private TextView mAddSection, mRemoveSection, mSectionCount;
     private LinearLayout mAddSectionLyt;
     private ArrayList<String> mSectionsArraylist;
@@ -43,6 +45,7 @@ public class SectionInfoDialog extends AppCompatActivity implements View.OnClick
     private Button mProceedBtn;
     private RadioGroup group;
     private Realm mRealm;
+    private TextInputLayout sectionNameLyt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +75,7 @@ public class SectionInfoDialog extends AppCompatActivity implements View.OnClick
             mSectionsArraylist = new ArrayList<>();
         }
         //adapter
-        mAddSectionNameAdapter = new AddSectionNameAdapter(this, mSectionsArraylist);
+        mAddSectionNameAdapter = new AddSectionNameAdapter(this, mSectionsArraylist, null);
         addSectionView();
 
         mAddSection = (TextView) findViewById(R.id.increase_section);
@@ -119,7 +122,7 @@ public class SectionInfoDialog extends AppCompatActivity implements View.OnClick
     }
 
     private void setDialogUI() {
-        TextInputLayout sectionNameLyt = (TextInputLayout) findViewById(R.id.input_layout_template_name);
+        sectionNameLyt = (TextInputLayout) findViewById(R.id.input_layout_template_name);
         final TextInputLayout sectionCountLyt = (TextInputLayout) findViewById(R.id.input_layout_no_of_sections);
         TextView radionBtnLabel = (TextView) findViewById(R.id.radio_btn_label);
         group = (RadioGroup) findViewById(R.id.hasSubSectionsRadioGrp);
@@ -139,7 +142,8 @@ public class SectionInfoDialog extends AppCompatActivity implements View.OnClick
         if(isTemplate) {
             sectionNameLyt.setHint("Template Name");
         } else {
-            sectionNameLyt.setHint("Section Name");
+            //sectionNameLyt.setHint("Section Name");
+            sectionNameLyt.setVisibility(View.GONE);
         }
     }
 
@@ -191,6 +195,9 @@ public class SectionInfoDialog extends AppCompatActivity implements View.OnClick
         if(intent.hasExtra(Constants.INTENT_EXTRA_SECTION_NAME)) {
             sectionName = intent.getStringExtra(Constants.INTENT_EXTRA_SECTION_NAME);
         }
+        if(intent.hasExtra(Constants.INTENT_EXTRA_TEMPLATE_NAME)) {
+            templateName = intent.getStringExtra(Constants.INTENT_EXTRA_TEMPLATE_NAME);
+        }
         if(intent.hasExtra(Constants.INTENT_EXTRA_IS_TEMPLATE)) {
             isTemplate = intent.getBooleanExtra(Constants.INTENT_EXTRA_IS_TEMPLATE, false);
         }
@@ -213,6 +220,7 @@ public class SectionInfoDialog extends AppCompatActivity implements View.OnClick
     private void startSectionsActivity() {
         Intent intent = new Intent(SectionInfoDialog.this, AddSectionInfoActivity.class);
         intent.putExtra(Constants.INTENT_EXTRA_TEMPLATE_NAME, templateNameEditText.getText().toString());
+        intent.putExtra(Constants.INTENT_EXTRA_SECTION_NAME, sectionName);
         startActivity(intent);
     }
 
@@ -232,18 +240,60 @@ public class SectionInfoDialog extends AppCompatActivity implements View.OnClick
                 if (mSectionsArraylist != null && mSectionsArraylist.size() > 0)
                     templateModel.setNoOfSections(String.valueOf(mSectionsArraylist.size()));
 
+                RealmList<SectionModel> mSectionRealmList = new RealmList<>();
                 for (int i = 0; i < mSectionsArraylist.size(); i++) {
                     SectionModel sectionModel = new SectionModel();
                     sectionModel.setmSectionName(mSectionsArraylist.get(i));
-
-                    mRealm.beginTransaction();
+                    sectionModel.setmSectionId(mSectionsArraylist.get(i) + System.currentTimeMillis());
+                    sectionModel.setmSectionsList(new RealmList<SectionModel>());
+                    /*mRealm.beginTransaction();
                     mRealm.copyToRealm(sectionModel);
-                    mRealm.commitTransaction();
+                    mRealm.commitTransaction();*/
+
+                    mSectionRealmList.add(sectionModel);
                 }
+
+                templateModel.setmSectionsList(mSectionRealmList);
+
                 mRealm.beginTransaction();
                 mRealm.copyToRealm(templateModel);
                 mRealm.commitTransaction();
             }
+            startSectionsActivity();
+        } else {
+
+                    TemplateModel templateModel = mRealm.where(TemplateModel.class).equalTo("templateName", templateName).findFirst();//.where(SectionModel.class).equalTo("mSectionName", sectionName).findFirst();
+                    Log.d("TAG", "template model");
+
+                    RealmList<SectionModel> mSectionModelList = templateModel.getmSectionsList();
+
+                    SectionModel sectionModel = null;
+                    for (SectionModel model : mSectionModelList) {
+                        if (model.getmSectionName().equalsIgnoreCase(sectionName)) {
+                            sectionModel = model;
+                        }
+                    }
+                    if (hasSections && sectionModel != null) {
+                        if (mSectionsArraylist != null && mSectionsArraylist.size() > 0) {
+                            mRealm.beginTransaction();
+
+                            sectionModel.setmNoOfSubSections(String.valueOf(mSectionsArraylist.size()));
+
+                            RealmList<SectionModel> mSectionRealmList = new RealmList<>();
+                            for (int i = 0; i < mSectionsArraylist.size(); i++) {
+                                SectionModel subSectionModel = new SectionModel();
+                                subSectionModel.setmSectionName(mSectionsArraylist.get(i));
+                                mSectionRealmList.add(subSectionModel);
+                                subSectionModel.setmSectionId(sectionModel.getmSectionId());
+
+                                sectionModel.getmSectionsList().add(subSectionModel);
+
+                            }
+
+                            mRealm.commitTransaction();
+                        }
+
+                    }
             startSectionsActivity();
         }
     }
