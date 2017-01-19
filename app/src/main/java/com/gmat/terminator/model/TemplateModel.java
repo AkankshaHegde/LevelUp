@@ -12,7 +12,8 @@ public class TemplateModel extends RealmObject {
 
     @PrimaryKey
     private String templateName;
-    private String noOfSections;
+    private int noOfSections;
+    private int breakTime;
     private RealmList<SectionModel> mSectionsList;
 
     public String getTemplateName() {
@@ -23,11 +24,11 @@ public class TemplateModel extends RealmObject {
         this.templateName = templateName;
     }
 
-    public String getNoOfSections() {
+    public int getNoOfSections() {
         return noOfSections;
     }
 
-    public void setNoOfSections(String noOfSections) {
+    public void setNoOfSections(int noOfSections) {
         this.noOfSections = noOfSections;
     }
 
@@ -37,5 +38,13 @@ public class TemplateModel extends RealmObject {
 
     public void setmSectionsList(RealmList<SectionModel> mSectionsList) {
         this.mSectionsList = mSectionsList;
+    }
+
+    public int getBreakTime() {
+        return breakTime;
+    }
+
+    public void setBreakTime(int breakTime) {
+        this.breakTime = breakTime;
     }
 }

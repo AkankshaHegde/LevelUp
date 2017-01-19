@@ -1,14 +1,12 @@
 package com.gmat.terminator.adapter;
 
 import android.content.Context;
-import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.CardView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.gmat.terminator.R;
@@ -72,8 +70,6 @@ public class AddSectionNameAdapter extends BaseAdapter {
         }
 
         ViewHolder holder = (ViewHolder) convertView.getTag();
-        //holder.ref = position;
-
         setViewHolder(holder, position);
 
         return convertView;
@@ -117,11 +113,8 @@ public class AddSectionNameAdapter extends BaseAdapter {
     private ViewHolder ininitializeViewHolder(View convertView, int gridUnit, int position) {
         ViewHolder holder = new ViewHolder();
 
-        //holder.mSectionsInputLyt = (TextInputLayout) convertView.findViewById(R.id.input_layout_sections);
-        //holder.mSectionsEditTxt = (EditText) convertView.findViewById(R.id.section_name);
         holder.mSectionLabel = (TextView) convertView.findViewById(R.id.section_label);
         holder.mSectionLyt = (CardView) convertView.findViewById(R.id.section_card);
-
         holder.mSectionLyt.setPadding(gridUnit, gridUnit, gridUnit, gridUnit);
 
         return holder;
@@ -134,10 +127,6 @@ public class AddSectionNameAdapter extends BaseAdapter {
 
     private class ViewHolder {
         private TextView mSectionLabel;
-        private TextInputLayout mSectionsInputLyt;
-        private EditText mSectionsEditTxt;
         private CardView mSectionLyt;
-        private int ref;
-
     }
 }

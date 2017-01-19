@@ -3,25 +3,44 @@ package com.gmat.terminator.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.gmat.terminator.R;
 import com.gmat.terminator.activity.AddTemplateActivity;
+import com.gmat.terminator.adapter.AddSectionAdapter;
+import com.gmat.terminator.interfaces.ISectionClickListener;
 import com.gmat.terminator.model.TemplateModel;
+import com.gmat.terminator.utils.AppUtility;
 import com.gmat.terminator.utils.Constants;
 
-import io.realm.Realm;
+import java.util.ArrayList;
 
-public class TemplatesFragment extends Fragment implements View.OnClickListener {
-     private TextView mAddTemplateBtn;
+import io.realm.Realm;
+import io.realm.RealmResults;
+
+import static android.app.Activity.RESULT_OK;
+
+public class TemplatesFragment extends Fragment implements View.OnClickListener, ISectionClickListener {
+    private TextView mAddTemplateBtn;
     private Realm mRealm;
+    private RecyclerView mExistingTemplatesList;
+    private ArrayList<String> mTemplateArrayList;
+    private AddSectionAdapter mAddSectionAdapter;
+    private TextInputLayout mTemplateNameLyt;
+    private Animation mAnimationShake;
 
     public TemplatesFragment() {
         // Required empty public constructor
@@ -30,7 +49,7 @@ public class TemplatesFragment extends Fragment implements View.OnClickListener 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -43,8 +62,26 @@ public class TemplatesFragment extends Fragment implements View.OnClickListener 
     }
 
     private void initializeViews(View view) {
+        mTemplateArrayList = new ArrayList<>();
+        mAnimationShake = AnimationUtils.loadAnimation(getActivity(), R.anim.shake);
+
+        mTemplateNameLyt = (TextInputLayout) view.findViewById(R.id.input_layout_section_name);
+
         mAddTemplateBtn = (TextView) view.findViewById(R.id.add_template_btn);
         mAddTemplateBtn.setOnClickListener(this);
+
+        mExistingTemplatesList = (RecyclerView) view.findViewById(R.id.existing_templates_list);
+        int gridUnit = AppUtility.getScreenGridUnitBy32(getActivity());
+        mExistingTemplatesList.setPadding(gridUnit, gridUnit, gridUnit, gridUnit);
+        mExistingTemplatesList.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        RealmResults<TemplateModel> templateList = mRealm.allObjects(TemplateModel.class);
+        for(TemplateModel model : templateList) {
+            mTemplateArrayList.add(model.getTemplateName());
+        }
+
+        mAddSectionAdapter = new AddSectionAdapter(getActivity(), mTemplateArrayList, this);
+        mExistingTemplatesList.setAdapter(mAddSectionAdapter);
     }
 
     @Override
@@ -56,7 +93,6 @@ public class TemplatesFragment extends Fragment implements View.OnClickListener 
     public void onDetach() {
         super.onDetach();
     }
-
 
     @Override
     public void onClick(View v) {
@@ -91,24 +127,50 @@ public class TemplatesFragment extends Fragment implements View.OnClickListener 
         dialogButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getActivity(), AddTemplateActivity.class);
-                i.putExtra(Constants.INTENT_EXTRA_TEMPLATE_NAME, templateName.getText().toString());
-                i.putExtra(Constants.INTENT_EXTRA_SECTION_COUNT, sectionCount.getText().toString());
-                addDataToRealm(templateName.getText().toString(), sectionCount.getText().toString());
-                startActivity(i);
-                alertDialog.dismiss();
+                validateEntry(templateName.getText().toString(), alertDialog);
+
             }
         });
 
         alertDialog.show();
     }
 
-    private void addDataToRealm(String templateName, String sectionCount) {
-        TemplateModel model = new TemplateModel();
-        model.setTemplateName(templateName);
-        model.setNoOfSections(sectionCount);
+    private void validateEntry(String templateName, AlertDialog alertDialog) {
+        if (TextUtils.isEmpty(templateName)) {
+            mTemplateNameLyt.startAnimation(mAnimationShake);
+            return;
+        }
 
-        /*for(int i=0; i < Integer.parseInt(sectionCount); i++) {
+        Intent i = new Intent(getActivity(), AddTemplateActivity.class);
+        i.putExtra(Constants.INTENT_EXTRA_TEMPLATE_NAME, templateName);
+        startActivityForResult(i, Constants.REQUEST_CODE_TEMPLATE);
+        alertDialog.dismiss();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == Constants.REQUEST_CODE_TEMPLATE) {
+            if (resultCode == RESULT_OK) {
+                RealmResults<TemplateModel> templateList = mRealm.allObjects(TemplateModel.class);
+                if(templateList == null) return;
+
+                mTemplateArrayList.clear();
+                for(TemplateModel model : templateList) {
+                    mTemplateArrayList.add(model.getTemplateName());
+                }
+                mAddSectionAdapter.notifyDataSetChanged();
+            }
+        }
+    }
+
+    private void addDataToRealm(String templateName, String sectionCount) {
+        /*TemplateModel model = new TemplateModel();
+        model.setTemplateName(templateName);
+        //model.setNoOfSections(sectionCount);
+
+        *//*for(int i=0; i < Integer.parseInt(sectionCount); i++) {
             SectionModel sectionModel = new SectionModel();
             sectionModel.setTemplateName(templateName);
             sectionModel.setmSectionName("Section " + (i+1));
@@ -117,9 +179,14 @@ public class TemplatesFragment extends Fragment implements View.OnClickListener 
             mRealm.copyToRealm(sectionModel);
             mRealm.commitTransaction();
         }
-*/
+*//*
         mRealm.beginTransaction();
         mRealm.copyToRealm(model);
-        mRealm.commitTransaction();
+        mRealm.commitTransaction();*/
+    }
+
+    @Override
+    public void onSectionClicked(String sectionName, String sectionType) {
+
     }
 }

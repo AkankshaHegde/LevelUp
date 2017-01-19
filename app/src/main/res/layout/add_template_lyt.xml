@@ -35,7 +35,7 @@
             android:textColor="@color/colorPrimary"
             android:hint="@string/template_name"
             android:inputType="textPersonName"
-            android:imeOptions="actionNext"
+            android:imeOptions="actionDone"
             android:textColorHint="@android:color/transparent"
             android:backgroundTint="@color/colorPrimary"
             android:layout_marginTop="30dp" />

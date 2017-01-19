@@ -36,7 +36,18 @@
                 android:layout_centerVertical="true"
                 android:adjustViewBounds="true"
                 android:layout_gravity="center"
-                android:src="@drawable/profile_image_bg"
+                android:src="@drawable/bg_rounded_corner_acc_page"
+                android:layout_weight="0.42" />
+
+            <ImageView
+                android:id="@+id/bg_"
+                android:scaleType="fitXY"
+                android:layout_height="130dp"
+                android:layout_width="130dp"
+                android:layout_centerVertical="true"
+                android:adjustViewBounds="true"
+                android:layout_gravity="center"
+                android:src="@drawable/circle_user_img_bg"
                 android:layout_weight="0.42" />
 
         </RelativeLayout>

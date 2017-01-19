@@ -39,7 +39,6 @@ public class SectionsAdapter extends RecyclerView.Adapter<SectionsAdapter.ViewHo
         if(mSectionsArrayList != null && mSectionsArrayList.size() > 0) {
             final String item = mSectionsArrayList.get(position);
             holder.mSectionName.setText(item);
-            //holder.mSectionLyt.setBackgroundColor(AppUtility.setRandomColor());
 
             holder.mSectionLyt.setOnClickListener(new View.OnClickListener() {
                 @Override

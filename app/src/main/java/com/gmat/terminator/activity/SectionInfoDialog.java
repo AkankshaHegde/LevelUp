@@ -238,7 +238,7 @@ public class SectionInfoDialog extends AppCompatActivity implements View.OnClick
 
             if (hasSections) {
                 if (mSectionsArraylist != null && mSectionsArraylist.size() > 0)
-                    templateModel.setNoOfSections(String.valueOf(mSectionsArraylist.size()));
+                    templateModel.setNoOfSections(mSectionsArraylist.size());
 
                 RealmList<SectionModel> mSectionRealmList = new RealmList<>();
                 for (int i = 0; i < mSectionsArraylist.size(); i++) {

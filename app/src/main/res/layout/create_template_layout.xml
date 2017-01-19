@@ -152,32 +152,36 @@
 
 
 
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/input_layout_break_time"
             android:layout_margin="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:visibility="gone"
+            android:weightSum="5"
             android:background="@color/colorPrimaryDark"
             android:layout_toRightOf="@+id/add_section_label"
             android:layout_toEndOf="@+id/add_section_label">
 
             <TextView
                 android:id="@+id/break_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
                 android:text="*  Break time between Sections:"
                 android:textColor="@color/white"
-                android:gravity="center|center_vertical"
+                android:layout_toRightOf="@+id/break_lyt"
+                android:gravity="left|center|center_vertical"
                 android:layout_centerVertical="true"
+                android:layout_weight="3"
                 android:textSize="16sp" />
 
 
             <RelativeLayout
-                android:layout_toRightOf="@id/break_title"
+                android:layout_toRightOf="@id/break_lyt"
                 android:layout_centerVertical="true"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
+                android:layout_weight="2"
                 android:layout_height="wrap_content">
 
                 <TextView
@@ -220,7 +224,7 @@
                     android:layout_toLeftOf="@+id/break_time"
                     android:layout_toStartOf="@+id/break_time" />
             </RelativeLayout>
-        </RelativeLayout>
+        </LinearLayout>
 
         <Button
             android:id="@+id/add_template_btn"

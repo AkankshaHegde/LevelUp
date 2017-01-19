@@ -2,6 +2,8 @@ package com.gmat.terminator.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
@@ -121,5 +123,19 @@ public class AppUtility {
         } else {
             view.setTypeface(null, Typeface.BOLD);
         }
+    }
+
+    public static String getPackageName(Context context) {
+        String packageName = "";
+        PackageManager packageManager = context.getPackageManager();
+        try {
+            PackageInfo packageInfo = packageManager.getPackageInfo(
+                    context.getPackageName(), 0);
+            packageName = packageInfo.packageName;
+            return packageName;
+        } catch (PackageManager.NameNotFoundException ex) {
+
+        }
+        return packageName;
     }
 }

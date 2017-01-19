@@ -30,4 +30,10 @@ public class Constants {
     public static final String INTENT_EXTRA_SECTION_NAME = "intent_extra_section_name";
     public static final String INTENT_EXTRA_IS_TEMPLATE = "intent_extra_is_template";
 
+    public static final int REQUEST_CODE_CAMERA_UPLOAD = 212;
+    public static final int REQUEST_CODE_PIC_UPLOAD = 213;
+    public static final int REQUEST_CODE_IMAGE_CROP = 214;
+    public static final String USER_PROFILE_PIC_PARENT_PATH = "/Android/data/com.gmat.terminator";
+
+    public static final int REQUEST_CODE_TEMPLATE = 215;
 }
