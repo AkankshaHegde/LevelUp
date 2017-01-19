@@ -34,12 +34,11 @@ import io.realm.RealmResults;
 import static android.app.Activity.RESULT_OK;
 
 public class TemplatesFragment extends Fragment implements View.OnClickListener, ISectionClickListener {
-    private TextView mAddTemplateBtn;
+    private TextView mAddTemplateBtn, mChooseExistingTxt;
     private Realm mRealm;
     private RecyclerView mExistingTemplatesList;
     private ArrayList<String> mTemplateArrayList;
     private AddSectionAdapter mAddSectionAdapter;
-    private TextInputLayout mTemplateNameLyt;
     private Animation mAnimationShake;
 
     public TemplatesFragment() {
@@ -65,8 +64,7 @@ public class TemplatesFragment extends Fragment implements View.OnClickListener,
         mTemplateArrayList = new ArrayList<>();
         mAnimationShake = AnimationUtils.loadAnimation(getActivity(), R.anim.shake);
 
-        mTemplateNameLyt = (TextInputLayout) view.findViewById(R.id.input_layout_template_name);
-
+        mChooseExistingTxt = (TextView) view.findViewById(R.id.choose_template_txt);
         mAddTemplateBtn = (TextView) view.findViewById(R.id.add_template_btn);
         mAddTemplateBtn.setOnClickListener(this);
 
@@ -76,8 +74,11 @@ public class TemplatesFragment extends Fragment implements View.OnClickListener,
         mExistingTemplatesList.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         RealmResults<TemplateModel> templateList = mRealm.allObjects(TemplateModel.class);
-        for(TemplateModel model : templateList) {
-            mTemplateArrayList.add(model.getTemplateName());
+        if (templateList != null ) {
+            for (TemplateModel model : templateList) {
+                mTemplateArrayList.add(model.getTemplateName());
+            }
+            mChooseExistingTxt.setVisibility(View.VISIBLE);
         }
 
         mAddSectionAdapter = new AddSectionAdapter(getActivity(), mTemplateArrayList, this);
@@ -121,13 +122,13 @@ public class TemplatesFragment extends Fragment implements View.OnClickListener,
         alertDialog.setCanceledOnTouchOutside(true);
 
         final EditText templateName = (EditText) dialogView.findViewById(R.id.template_name);
-        final EditText sectionCount = (EditText) dialogView.findViewById(R.id.no_of_sections);
+        final TextInputLayout mTemplateNameLyt = (TextInputLayout) dialogView.findViewById(R.id.input_layout_template_name);
 
         Button dialogButton = (Button) dialogView.findViewById(R.id.proceed_btn);
         dialogButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                validateEntry(templateName.getText().toString(), alertDialog);
+                validateEntry(templateName.getText().toString(), alertDialog, mTemplateNameLyt);
 
             }
         });
@@ -135,7 +136,7 @@ public class TemplatesFragment extends Fragment implements View.OnClickListener,
         alertDialog.show();
     }
 
-    private void validateEntry(String templateName, AlertDialog alertDialog) {
+    private void validateEntry(String templateName, AlertDialog alertDialog, TextInputLayout mTemplateNameLyt) {
         if (TextUtils.isEmpty(templateName)) {
             mTemplateNameLyt.startAnimation(mAnimationShake);
             return;
@@ -159,6 +160,7 @@ public class TemplatesFragment extends Fragment implements View.OnClickListener,
                 mTemplateArrayList.clear();
                 for(TemplateModel model : templateList) {
                     mTemplateArrayList.add(model.getTemplateName());
+                    mChooseExistingTxt.setVisibility(View.VISIBLE);
                 }
                 mAddSectionAdapter.notifyDataSetChanged();
             }

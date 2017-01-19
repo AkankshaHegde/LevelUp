@@ -75,9 +75,10 @@
         android:textColor="@color/colorPrimary"
         android:layout_margin="10dp"
         android:textSize="18sp"
+        android:visibility="gone"
         android:layout_alignParentLeft="true"
         android:text="Choose from existing templates:"
-        android:id="@+id/textView2" />
+        android:id="@+id/choose_template_txt" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/existing_templates_list"
