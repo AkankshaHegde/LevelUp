@@ -65,7 +65,7 @@ public class TemplatesFragment extends Fragment implements View.OnClickListener,
         mTemplateArrayList = new ArrayList<>();
         mAnimationShake = AnimationUtils.loadAnimation(getActivity(), R.anim.shake);
 
-        mTemplateNameLyt = (TextInputLayout) view.findViewById(R.id.input_layout_section_name);
+        mTemplateNameLyt = (TextInputLayout) view.findViewById(R.id.input_layout_template_name);
 
         mAddTemplateBtn = (TextView) view.findViewById(R.id.add_template_btn);
         mAddTemplateBtn.setOnClickListener(this);
