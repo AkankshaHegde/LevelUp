@@ -38,25 +38,30 @@
     <android.support.v7.widget.CardView
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/section_card"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginBottom="10dp"
         card_view:cardElevation="5dp"
-        android:layout_margin="10dp"
+        android:layout_marginTop="20dp"
         android:padding="10dp"
+        android:layout_centerHorizontal="true"
         card_view:cardCornerRadius="5dp">
 
         <LinearLayout
             android:id="@+id/card_linear_lyt"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
             android:orientation="vertical" >
 
             <TextView
                 android:id="@+id/add_template_btn"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/white"
                 android:layout_gravity="center"
@@ -76,6 +81,7 @@
         android:layout_margin="10dp"
         android:textSize="18sp"
         android:visibility="gone"
+        android:paddingTop="20dp"
         android:layout_alignParentLeft="true"
         android:text="Choose from existing templates:"
         android:id="@+id/choose_template_txt" />
@@ -84,7 +90,7 @@
         android:id="@+id/existing_templates_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView2"></android.support.v7.widget.RecyclerView>
+        android:layout_below="@+id/choose_template_txt"></android.support.v7.widget.RecyclerView>
 
 
     <android.support.design.widget.FloatingActionButton

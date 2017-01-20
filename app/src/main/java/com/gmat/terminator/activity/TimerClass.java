@@ -15,22 +15,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.gmat.terminator.R;
-import com.gmat.terminator.model.SectionModel;
-import com.gmat.terminator.model.TemplateModel;
 import com.gmat.terminator.utils.Constants;
-
-import java.util.ArrayList;
-
-import io.realm.Realm;
 
 /**
  * Created by Akanksha on 13-Dec-16.
  */
 
-public class TimerActivity extends AppCompatActivity implements View.OnClickListener {
+public class TimerClass extends AppCompatActivity implements View.OnClickListener {
     private Toolbar toolbar;
-    private int totalTime, totalQuestnCount, timeTraversed, previousSectionTime;
-    private TextView time, sectionNameTxt;
+    private int totalTime, totalQuestnCount;
+    private TextView time;
     private Button butnstart, butnreset;
     long starttime = 0L;
     long timeInMilliseconds = 0L;
@@ -42,13 +36,11 @@ public class TimerActivity extends AppCompatActivity implements View.OnClickList
     int milliseconds = 0, questCount = 0;
     Handler handler = new Handler();
     int earlyTime, mediumTime, avgTimePerQuestn;
-    TextView questnCount, totalTimeTxt, mSectionNameTxt, mSectionCompletedTxt, mTimeUpTxt;
+    TextView questnCount, totalTimeTxt;
     RelativeLayout timerLyt;
     boolean isFirstClick = false;
     private int previousSecs = 0;
-    private Realm mRealm;
-    private ArrayList<Integer> mSectionTimeList;
-    private ArrayList<SectionModel> mSectionModelList;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,10 +53,6 @@ public class TimerActivity extends AppCompatActivity implements View.OnClickList
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         toolbar.setNavigationIcon(R.drawable.back_arrow);
         toolbar.setTitle("Test Timer");
-
-        mRealm = Realm.getInstance(this);
-        mSectionTimeList = new ArrayList<>();
-        mSectionModelList = new ArrayList<>();
         //http://www.androidplus.org/2015/03/android-stopwatch-timer-app-tutorial-15.html
         //see for stopwatch of android to get some ideas of design
 
@@ -87,10 +75,6 @@ public class TimerActivity extends AppCompatActivity implements View.OnClickList
 
         totalTimeTxt = (TextView) findViewById(R.id.total_time);
         questnCount = (TextView) findViewById(R.id.question_countdown);
-
-        mSectionNameTxt = (TextView) findViewById(R.id.section_name);
-        mSectionCompletedTxt = (TextView) findViewById(R.id.section_done);
-        mTimeUpTxt = (TextView) findViewById(R.id.timer_completed);
     }
 
     public Runnable updateTimer = new Runnable() {
@@ -130,6 +114,7 @@ public class TimerActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
+
     private void getDataFromIntent() {
         Intent intent = getIntent();
         if(intent != null) {
@@ -141,26 +126,9 @@ public class TimerActivity extends AppCompatActivity implements View.OnClickList
                 totalQuestnCount = Integer.parseInt(intent.getStringExtra(Constants.INTENT_EXTRA_TOTAL_QUESTION_COUNT));
                 questnCount.setText("0/" + String.valueOf(totalQuestnCount));
             }
-            if(intent.hasExtra(Constants.INTENT_EXTRA_TEMPLATE_NAME)) {
-                String templateName = intent.getStringExtra(Constants.INTENT_EXTRA_TEMPLATE_NAME);
-                getSupportActionBar().setTitle(templateName);
-                TemplateModel model = mRealm.where(TemplateModel.class).equalTo("templateName", templateName).findFirst();
-
-
-                if(model != null && model.getmSectionsList()!= null && model.getmSectionsList().size() > 0) {
-                    for(SectionModel sectionModel : model.getmSectionsList()) {
-                        mSectionTimeList.add(sectionModel.getmTimePerSection());
-                        mSectionModelList.add(sectionModel);
-
-                        totalTime = totalTime + sectionModel.getmTimePerSection();
-                        totalTime = totalTime + model.getBreakTime();
-                    }
-                }
-            }
         }
+        computePerQuestionTime();
     }
-    //computePerQuestionTime();
-
 
     private void computePerQuestionTime() {
         if(totalQuestnCount != 0 && totalTime != 0) {
@@ -216,7 +184,6 @@ public class TimerActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void handleStartBtnClick() {
-        startTimerForSection();
         if(!isFirstClick) {
             isFirstClick = true;
             timerLyt.setBackgroundResource(R.drawable.timer_bg_green);
@@ -224,7 +191,7 @@ public class TimerActivity extends AppCompatActivity implements View.OnClickList
         if (t == 1) {
             butnstart.setText("Pause");
             starttime = SystemClock.uptimeMillis();
-            //handler.postDelayed(updateTimer, 0);
+            handler.postDelayed(updateTimer, 0);
             t = 0;
         } else if(t == 2) {
             handleResetBtnClick();
@@ -236,19 +203,6 @@ public class TimerActivity extends AppCompatActivity implements View.OnClickList
             timeSwapBuff += timeInMilliseconds;
             handler.removeCallbacks(updateTimer);
             t = 1;
-        }
-    }
-
-    private void startTimerForSection() {
-        if(mSectionTimeList != null && mSectionTimeList.size() > 0 &&
-                mSectionModelList != null && mSectionModelList.size() > 0) {
-
-            if(timeTraversed == 0) {
-                mSectionNameTxt.setText(mSectionModelList.get(0).getmSectionName());
-                questnCount.setText(mSectionModelList.get(0).getmNoOfQuestions());
-                totalTimeTxt.setText(totalTime + ":00");
-                handler.postDelayed(updateTimer, 0);
-            }
         }
     }
 

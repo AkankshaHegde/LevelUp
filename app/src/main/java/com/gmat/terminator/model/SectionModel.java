@@ -14,9 +14,11 @@ public class SectionModel extends RealmObject{
     private String mSectionName;
     private String mSectionType;
     private String mNoOfQuestions;
-    private String mTimePerSection;
+    private int mTimePerSection;
     private String mNoOfSubSections;
+    private int perQuestnTimeInSecs;
     private String templateName;
+    private int questnIntervalInSecs;
     private RealmList<SectionModel> mSectionsList;
 
     public String getmSectionId() {
@@ -51,11 +53,11 @@ public class SectionModel extends RealmObject{
         this.mNoOfQuestions = mNoOfQuestions;
     }
 
-    public String getmTimePerSection() {
+    public int getmTimePerSection() {
         return mTimePerSection;
     }
 
-    public void setmTimePerSection(String mTimePerSection) {
+    public void setmTimePerSection(int mTimePerSection) {
         this.mTimePerSection = mTimePerSection;
     }
 
@@ -81,5 +83,21 @@ public class SectionModel extends RealmObject{
 
     public void setmSectionsList(RealmList<SectionModel> mSectionsList) {
         this.mSectionsList = mSectionsList;
+    }
+
+    public int getPerQuestnTimeInSecs() {
+        return perQuestnTimeInSecs;
+    }
+
+    public void setPerQuestnTimeInSecs(int perQuestnTimeInSecs) {
+        this.perQuestnTimeInSecs = perQuestnTimeInSecs;
+    }
+
+    public int getQuestnIntervalInSecs() {
+        return questnIntervalInSecs;
+    }
+
+    public void setQuestnIntervalInSecs(int questnIntervalInSecs) {
+        this.questnIntervalInSecs = questnIntervalInSecs;
     }
 }

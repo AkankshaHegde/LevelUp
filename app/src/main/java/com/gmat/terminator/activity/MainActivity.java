@@ -15,6 +15,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Base64;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,9 +26,7 @@ import android.widget.Toast;
 
 import com.gmat.terminator.R;
 import com.gmat.terminator.fragment.CreateTestFragment;
-import com.gmat.terminator.fragment.HistoryFragment;
 import com.gmat.terminator.fragment.QuestionTypeFragment;
-import com.gmat.terminator.fragment.StatsFragment;
 import com.gmat.terminator.fragment.TemplatesFragment;
 import com.gmat.terminator.fragment.TestCountdownFragment;
 import com.gmat.terminator.model.AccountModel;
@@ -128,10 +127,15 @@ public class MainActivity extends AppCompatActivity {
         mRealm = Realm.getInstance(getApplicationContext());
         RealmResults<AccountModel> accountRealmResults = mRealm.allObjects(AccountModel.class);
         for(AccountModel model : accountRealmResults) {
-            txtName.setText(model.getFirstName() + " " +
-                    model.getLastName());
 
-            setUserImg(model.getUserImg());
+            if(!TextUtils.isEmpty(model.getFirstName()) && !TextUtils.isEmpty(model.getLastName())) {
+                txtName.setText(model.getFirstName() + " " +
+                        model.getLastName());
+            }
+
+            if(!TextUtils.isEmpty(model.getUserImg())) {
+                setUserImg(model.getUserImg());
+            }
         }
     }
 
@@ -204,23 +208,23 @@ public class MainActivity extends AppCompatActivity {
                 // createTest fragment
                 CreateTestFragment createTestFragment = new CreateTestFragment();
                 return createTestFragment;
-            case 2:
+            /*case 2:
                 // stats fragment
                 StatsFragment statsFragment = new StatsFragment();
-                return statsFragment;
-            case 3:
+                return statsFragment;*/
+            case 2:
                 // templates fragment
                 TemplatesFragment templatesFragment = new TemplatesFragment();
                 return templatesFragment;
 
-            case 4:
+            case 3:
                 // questionType fragment
                 QuestionTypeFragment questnFragment = new QuestionTypeFragment();
                 return questnFragment;
-            case 5:
+           /* case 5:
                 // history fragment
                 HistoryFragment historyFragment = new HistoryFragment();
-                return historyFragment;
+                return historyFragment;*/
             default:
                 return new CreateTestFragment();
         }
@@ -253,22 +257,22 @@ public class MainActivity extends AppCompatActivity {
                         navItemIndex = 1;
                         CURRENT_TAG = TAG_CREATE_TEST;
                         break;
-                    case R.id.nav_stats:
+                   /* case R.id.nav_stats:
                         navItemIndex = 2;
                         CURRENT_TAG = TAG_STATS;
-                        break;
+                        break;*/
                     case R.id.nav_templates:
-                        navItemIndex = 3;
+                        navItemIndex = 2;
                         CURRENT_TAG = TAG_TEMPLATES;
                         break;
                     case R.id.nav_question_type:
-                        navItemIndex = 4;
+                        navItemIndex = 3;
                         CURRENT_TAG = TAG_QUESTION_TYPE;
                         break;
-                    case R.id.nav_history:
+                    /*case R.id.nav_history:
                         navItemIndex = 5;
                         CURRENT_TAG = TAG_HISTORY;
-                        break;
+                        break;*/
                     /*case R.id.nav_privacy_policy:
                         // launch new intent instead of loading fragment
                         startActivity(new Intent(MainActivity.this, PrivacyPolicyActivity.class));

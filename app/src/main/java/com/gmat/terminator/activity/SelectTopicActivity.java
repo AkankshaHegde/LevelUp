@@ -8,7 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.gmat.terminator.R;
-import com.gmat.terminator.fragment.CreateTestFragment;
+import com.gmat.terminator.fragment.QuestionTypeFragment;
 import com.gmat.terminator.utils.Constants;
 
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ import java.util.ArrayList;
  */
 
 public class SelectTopicActivity extends AppCompatActivity {
-    private CreateTestFragment mCreateTestFragment;
+    private QuestionTypeFragment mCreateTestFragment;
     private final String TAG_TEST_FRAGMENT = "test_fragment";
     private String mTopicName;
     private ArrayList<String> mTopicList;
@@ -41,7 +41,7 @@ public class SelectTopicActivity extends AppCompatActivity {
     }
 
     private void initializeFragment() {
-        mCreateTestFragment = new CreateTestFragment();
+        mCreateTestFragment = new QuestionTypeFragment();
         Bundle bundle = new Bundle();
         bundle.putString(Constants.INTENT_EXTRA_TOPIC_NAME, mTopicName);
         bundle.putStringArrayList(Constants.INTENT_EXTRA_TOPIC_LIST, mTopicList);

@@ -38,7 +38,7 @@ import io.realm.RealmList;
 
 public class AddTemplateActivity extends AppCompatActivity implements View.OnClickListener, SectionClickListener {
     private Toolbar toolbar;
-    private EditText breaktimeEditText, mSectionCount;
+    private TextView breaktimeEditText, mSectionCount;
     private TextView mAddSection, mRemoveSection, mAddBreakTime, mRemoveBreaktime;
     private LinearLayout mAddSectionLyt;
     private ArrayList<String> mSectionsArraylist;
@@ -70,10 +70,10 @@ public class AddTemplateActivity extends AppCompatActivity implements View.OnCli
 
     private void initializeViews() {
         mSectionModelList = new ArrayList<>();
-        breaktimeEditText = (EditText) findViewById(R.id.break_time);
+        breaktimeEditText = (TextView) findViewById(R.id.break_time);
         mBreaktimeLyt = (LinearLayout) findViewById(R.id.input_layout_break_time);
 
-        mSectionCount = (EditText) findViewById(R.id.section_count);
+        mSectionCount = (TextView) findViewById(R.id.section_count);
 
         mAddSectionLyt = (LinearLayout) findViewById(R.id.sections_linear_lyt);
 
@@ -151,8 +151,13 @@ public class AddTemplateActivity extends AppCompatActivity implements View.OnCli
                 SectionModel sectionModel = new SectionModel();
                 sectionModel.setmSectionId(mSectionModelList.get(i).getmSectionName() + System.currentTimeMillis());
                 sectionModel.setmTimePerSection(mSectionModelList.get(i).getmTimePerSection());
-                sectionModel.setmNoOfQuestions(mSectionModelList.get(i).getmNoOfSubSections());
+                sectionModel.setmNoOfQuestions(mSectionModelList.get(i).getmNoOfQuestions());
                 sectionModel.setmSectionName(mSectionModelList.get(i).getmSectionName());
+
+                int mPerQuestnTimeInSecs = computePerQuestnTimeInSecs(mSectionModelList.get(i).getmNoOfQuestions(),
+                        mSectionModelList.get(i).getmTimePerSection());
+                sectionModel.setPerQuestnTimeInSecs(mPerQuestnTimeInSecs);
+                sectionModel.setQuestnIntervalInSecs(computeQuestnIntervalInSecs(mPerQuestnTimeInSecs));
 
                 mSectionList.add(sectionModel);
             }
@@ -170,6 +175,17 @@ public class AddTemplateActivity extends AppCompatActivity implements View.OnCli
 
             passDataToPreviousActivity();
         }
+    }
+
+    private int computeQuestnIntervalInSecs(int mPerQuestnTimeInSecs) {
+        return  (mPerQuestnTimeInSecs/3) * 60;
+    }
+
+    private int computePerQuestnTimeInSecs(String inNoOfQuestns, int inTotalTime) {
+        if(inNoOfQuestns != null) {
+            return  inTotalTime / Integer.parseInt(inNoOfQuestns);
+        }
+        return 0;
     }
 
     public void showAlertDialog() {
@@ -374,7 +390,7 @@ public class AddTemplateActivity extends AppCompatActivity implements View.OnCli
         SectionModel model = new SectionModel();
         model.setmSectionName(sectionName);
         model.setmNoOfQuestions(questnCount);
-        model.setmTimePerSection(totalTime);
+        model.setmTimePerSection(Integer.parseInt(totalTime));
         mSectionModelList.add(model);
     }
 

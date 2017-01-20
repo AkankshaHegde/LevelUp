@@ -11,9 +11,9 @@
     <string-array name="nav_item_activity_titles">
         <item>Test Date Countdown</item>
         <item>Create Test</item>
-        <item>Stats</item>
         <item>Templates</item>
         <item>Question Type</item>
+        <item>Stats</item>
         <item>History</item>
 
     </string-array>
