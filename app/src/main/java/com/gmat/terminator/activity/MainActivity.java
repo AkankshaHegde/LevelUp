@@ -1,7 +1,8 @@
 package com.gmat.terminator.activity;
 
-import android.content.Intent;
-import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
@@ -14,6 +15,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,8 +23,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.gmat.terminator.R;
 import com.gmat.terminator.fragment.CreateTestFragment;
 import com.gmat.terminator.fragment.HistoryFragment;
@@ -31,9 +31,7 @@ import com.gmat.terminator.fragment.StatsFragment;
 import com.gmat.terminator.fragment.TemplatesFragment;
 import com.gmat.terminator.fragment.TestCountdownFragment;
 import com.gmat.terminator.model.AccountModel;
-import com.gmat.terminator.other.CircleTransform;
-import com.gmat.terminator.utils.Constants;
-import com.gmat.terminator.utils.SecureSharedPrefs;
+import com.gmat.terminator.utils.AppUtility;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -43,14 +41,10 @@ public class MainActivity extends AppCompatActivity {
     private NavigationView navigationView;
     private DrawerLayout drawer;
     private View navHeader;
-    private ImageView imgNavHeaderBg, imgProfile;
-    private TextView txtName, txtWebsite;
+    private ImageView imgProfile;
+    private TextView txtName;
     private Toolbar toolbar;
     private FloatingActionButton fab;
-
-    // urls to load navigation header background image
-    // and profile image
-    private static final String urlProfileImg = "https://lh3.googleusercontent.com/eCtE_G34M9ygdkmOpYvCag1vBARCmZwnVS6rS5t4JLzJ6QgQSBquM0nuTsCpLhYbKljoyS-txg";
 
     // index to identify current nav menu item
     public static int navItemIndex = 0;
@@ -72,8 +66,6 @@ public class MainActivity extends AppCompatActivity {
     // flag to load home fragment when user presses back key
     private boolean shouldLoadHomeFragOnBackPress = true;
     private Handler mHandler;
-    private SecureSharedPrefs prefs;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,8 +83,8 @@ public class MainActivity extends AppCompatActivity {
         // Navigation view header
         navHeader = navigationView.getHeaderView(0);
         txtName = (TextView) navHeader.findViewById(R.id.name);
-        txtWebsite = (TextView) navHeader.findViewById(R.id.website);
-        imgNavHeaderBg = (ImageView) navHeader.findViewById(R.id.img_header_bg);
+        AppUtility.setRobotoMediumFont(this, txtName, Typeface.NORMAL);
+
         imgProfile = (ImageView) navHeader.findViewById(R.id.img_profile);
 
         // load toolbar titles from string resources
@@ -126,39 +118,10 @@ public class MainActivity extends AppCompatActivity {
      */
     private void loadNavHeader() {
         getDataFromIntent();
-        // name, website
-        txtWebsite.setVisibility(View.GONE);
-
-        // Loading profile image
-        Glide.with(this).load(urlProfileImg)
-                .crossFade()
-                .thumbnail(0.5f)
-                .bitmapTransform(new CircleTransform(this))
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(imgProfile);
-
-        // showing dot next to notifications label
-        navigationView.getMenu().getItem(3).setActionView(R.layout.menu_dot);
     }
 
     private void getDataFromIntent() {
         getDataFromRealm();
-       /* Intent intent = getIntent();
-        prefs = new SecureSharedPrefs(getApplicationContext());
-        if(intent != null) {
-            if(intent.hasExtra(Constants.INTENT_EXTRA_FIRST_NAME) && intent.hasExtra(Constants.INTENT_EXTRA_LAST_NAME)) {
-                txtName.setText(intent.getStringExtra(Constants.INTENT_EXTRA_FIRST_NAME) + " " + 
-                        intent.getStringExtra(Constants.INTENT_EXTRA_LAST_NAME));
-
-                SharedPreferences.Editor editor = prefs.edit();
-                editor.putString(Constants.PREF_NAME_USERNAME, intent.getStringExtra(Constants.INTENT_EXTRA_FIRST_NAME) + " " +
-                        intent.getStringExtra(Constants.INTENT_EXTRA_LAST_NAME));
-                editor.commit();
-            } else {
-                String username = prefs.getString(Constants.PREF_NAME_USERNAME, null);
-                txtName.setText(username);
-            }
-        }*/
     }
 
     private void getDataFromRealm() {
@@ -167,7 +130,15 @@ public class MainActivity extends AppCompatActivity {
         for(AccountModel model : accountRealmResults) {
             txtName.setText(model.getFirstName() + " " +
                     model.getLastName());
+
+            setUserImg(model.getUserImg());
         }
+    }
+
+    private void setUserImg(String userImgText) {
+        byte[] decodedString = Base64.decode(userImgText, Base64.DEFAULT);
+        Bitmap bitmap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        imgProfile.setImageBitmap(bitmap);
     }
 
     /***

@@ -26,6 +26,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -40,6 +41,7 @@ import com.gmat.terminator.utils.Constants;
 import com.gmat.terminator.utils.PermissionUtil;
 import com.gmat.terminator.utils.SecureSharedPrefs;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -61,6 +63,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     private ImageView mUserImg;
     private Realm mRealm;
     private String imagepath;
+    private String mUserImgString;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -139,6 +142,9 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         AccountModel accountModel = mRealm.createObject(AccountModel.class);
         accountModel.setFirstName(mFirstName.getText().toString());
         accountModel.setLastName(mLastName.getText().toString());
+        if(mUserImgString != null) {
+            accountModel.setUserImg(mUserImgString);
+        }
         mRealm.commitTransaction();
     }
 
@@ -397,13 +403,13 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                         }
                         try {
                             Uri selectedImage = Uri.fromFile(new File(f.getAbsolutePath()));
-                                String resp= compressImage(f.getAbsolutePath());
-                                if(resp!=null){
-                                    File imageFile = new File(resp);
-                                    updateProfileImage(imageFile, selectedImage);
-                                } else
-                                    showAlert("", getString(R.string.title_400));
-                                return;
+                            String resp= compressImage(f.getAbsolutePath());
+                            if(resp!=null){
+                                File imageFile = new File(resp);
+                                updateProfileImage(imageFile, selectedImage);
+                            } else
+                                showAlert("", getString(R.string.title_400));
+                            return;
 
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -458,7 +464,9 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
         try {
             Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
+            mUserImgString = encodeUserImgToString(bitmap);
             //mImgCorner.setVisibility(View.VISIBLE);
+
             mUserImg.setImageBitmap(bitmap);
             //uploadImage(picUri);
         }
@@ -474,6 +482,31 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         }
 
     }
+
+    private String encodeUserImgToString(Bitmap bitmap) {
+        String encodedImage = getEncodedString(bitmap);
+
+        if(!TextUtils.isEmpty(encodedImage)) {
+            return encodedImage;
+        }
+        return null;
+    }
+
+    private String getEncodedString(Bitmap bitmap) {
+        String encodedImage = "";
+        try {
+            if (bitmap != null) {
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
+                byte[] byteArray = baos.toByteArray();
+                encodedImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
+            }
+        } catch (Exception e) {
+                e.printStackTrace();
+        }
+        return encodedImage;
+    }
+
 
     public static String compressImage(String imageUri) {
         if (imageUri != null) {

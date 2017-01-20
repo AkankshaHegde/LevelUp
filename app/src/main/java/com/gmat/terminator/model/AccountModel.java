@@ -9,6 +9,7 @@ import io.realm.RealmObject;
 public class AccountModel extends RealmObject {
     private String firstName;
     private String lastName;
+    private String userImg;
 
     public String getFirstName() {
         return firstName;
@@ -24,5 +25,13 @@ public class AccountModel extends RealmObject {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getUserImg() {
+        return userImg;
+    }
+
+    public void setUserImg(String userImg) {
+        this.userImg = userImg;
     }
 }

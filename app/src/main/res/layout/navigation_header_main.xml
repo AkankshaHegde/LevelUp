@@ -13,36 +13,67 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="fitXY"
-        android:src="@drawable/nav_menu_header_bg" />
+        android:src="@color/colorPrimary" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
+        android:layout_alignParentBottom="true"
         android:orientation="vertical"
-        android:padding="@dimen/activity_horizontal_margin">
+        >
 
-        <ImageView
-            android:id="@+id/img_profile"
-            android:layout_width="@dimen/profile_width"
-            android:layout_height="@dimen/profile_height"
-            android:paddingTop="@dimen/nav_header_vertical_spacing"
-            android:visibility="invisible"
-            app:srcCompat="@drawable/profile_image" />
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:layout_gravity="left">
+
+            <ImageView
+                android:id="@+id/img_profile"
+                android:scaleType="fitXY"
+                android:layout_height="90dp"
+                android:layout_width="90dp"
+                android:layout_centerVertical="true"
+                android:adjustViewBounds="true"
+                android:layout_gravity="center"
+                android:src="@drawable/inner_profile_img"
+                android:layout_weight="0.42" />
+
+            <ImageView
+                android:id="@+id/bg_image"
+                android:scaleType="fitXY"
+                android:layout_height="90dp"
+                android:layout_width="90dp"
+                android:layout_centerVertical="true"
+                android:adjustViewBounds="true"
+                android:layout_gravity="center"
+                android:src="@drawable/inner_bg_rounded_corner_acc_page"
+                android:layout_weight="0.42" />
+
+            <ImageView
+                android:id="@+id/bg_"
+                android:scaleType="fitXY"
+                android:layout_height="90dp"
+                android:layout_width="90dp"
+                android:adjustViewBounds="true"
+                android:layout_gravity="center"
+                android:src="@drawable/inner_circle_user_img"
+                android:layout_weight="0.42"
+                android:layout_alignRight="@+id/img_profile"
+                android:layout_alignEnd="@+id/img_profile" />
+
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="ccbcnb"
+            android:gravity="center|left"
+            android:textSize="18sp"
             android:textColor="@android:color/white"
-            android:paddingTop="@dimen/nav_header_vertical_spacing"
+            android:paddingLeft="10dp"
              />
-
-        <TextView
-            android:id="@+id/website"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"/>
 
     </LinearLayout>
 </RelativeLayout>
