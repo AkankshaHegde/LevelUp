@@ -145,6 +145,7 @@ public class TemplatesFragment extends Fragment implements View.OnClickListener,
         Intent i = new Intent(getActivity(), AddTemplateActivity.class);
         i.putExtra(Constants.INTENT_EXTRA_TEMPLATE_NAME, templateName);
         startActivityForResult(i, Constants.REQUEST_CODE_TEMPLATE);
+        i.putExtra(Constants.INTENT_EXTRA_IS_TEMPLATE_EDIT, false);
         alertDialog.dismiss();
     }
 
@@ -189,6 +190,9 @@ public class TemplatesFragment extends Fragment implements View.OnClickListener,
 
     @Override
     public void onSectionClicked(String sectionName, String sectionType) {
-
+        /*Intent i = new Intent(getActivity(), AddTemplateActivity.class);
+        i.putExtra(Constants.INTENT_EXTRA_TEMPLATE_NAME, sectionName);
+        i.putExtra(Constants.INTENT_EXTRA_IS_TEMPLATE_EDIT, true);
+        startActivityForResult(i, Constants.REQUEST_CODE_TEMPLATE);*/
     }
 }

@@ -220,7 +220,7 @@
                     android:text="-"
                     android:enabled="true"
                     android:textSize="24sp"
-                    android:textColor="@color/gray"
+                    android:textColor="@color/colorPrimary"
                     android:layout_toLeftOf="@+id/break_time"
                     android:layout_toStartOf="@+id/break_time" />
             </RelativeLayout>

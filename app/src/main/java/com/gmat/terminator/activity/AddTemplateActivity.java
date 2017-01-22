@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -263,12 +264,18 @@ public class AddTemplateActivity extends AppCompatActivity implements View.OnCli
 
                 if(sectionCount == 1) {
                     disableDecrementBtn(mRemoveSection, true);
+                    mBreaktimeLyt.setVisibility(View.GONE);
+
                 } else {
                     disableDecrementBtn(mRemoveSection, false);
+                    mBreaktimeLyt.setVisibility(View.VISIBLE);
+
                 }
                 removeSectionView();
             } else {
                 disableDecrementBtn(mRemoveSection, true);
+                mBreaktimeLyt.setVisibility(View.GONE);
+
             }
         }
     }
@@ -280,7 +287,6 @@ public class AddTemplateActivity extends AppCompatActivity implements View.OnCli
             } else {
                 decrementBtn.setTextColor(getResources().getColor(R.color.gray));
             }
-            mBreaktimeLyt.setVisibility(View.GONE);
         } else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 decrementBtn.setTextColor(getResources().getColor(R.color.colorPrimary, null));
@@ -397,5 +403,18 @@ public class AddTemplateActivity extends AppCompatActivity implements View.OnCli
     private void updateTemplateData(String sectionName, int position) {
         mSectionsArraylist.set(position, sectionName);
         addChildToLinearLayout();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        if (menuItem.getItemId() == android.R.id.home) {
+            onBackPressed();
+        }
+        return super.onOptionsItemSelected(menuItem);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }

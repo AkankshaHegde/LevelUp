@@ -193,17 +193,20 @@ public class TimerActivity extends AppCompatActivity implements View.OnClickList
                 break;
             case R.id.reset:
                 handleResetBtnClick();
+                handleReverseCountdownTimerReset();
                 break;
             case R.id.timer_lyt:
-                if(!butnstart.getText().toString().equalsIgnoreCase("Start")) {
+                //if(!butnstart.getText().toString().equalsIgnoreCase("Start")) {
                     handleTimerLytClick();
-                }
+                //}
         }
     }
 
     private void handleTimerLytClick() {
         if(totalQuestnCount != 0) {
             questCount++;
+            handleResetBtnClick();
+            handleStartBtnClick();
             if(questCount <= totalQuestnCount) {
                 questnCount.setText(String.valueOf(questCount + "/" + sectionQuestnCount));
                 previousSecs = secs;
@@ -211,7 +214,7 @@ public class TimerActivity extends AppCompatActivity implements View.OnClickList
                     timeSwapBuff += timeInMilliseconds;
                     handler.removeCallbacks(updateTimer);
                     mReverseCountDownTimer.cancel();
-                    mReverseCountDownTimer.onFinish();
+                    //mReverseCountDownTimer.onFinish();
                     t = 2;
                     butnstart.setText("Start");
                     time.setTextColor(Color.WHITE);
@@ -226,20 +229,45 @@ public class TimerActivity extends AppCompatActivity implements View.OnClickList
                     sectionCount++;
 
                     if (i < mSectionModelList.size()) {
-                        totalQuestnCount = Integer.parseInt(mSectionModelList.get(i + 1).getmNoOfQuestions());
-                        questCount = 0;
+                        try {
+                            totalQuestnCount = Integer.parseInt(mSectionModelList.get(i + 1).getmNoOfQuestions());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                            questCount = 0;
 
-                        mSectionNameTxt.setText("Break Time");
-                        questnCount.setVisibility(View.GONE);
-                        totalTimeTxt.setVisibility(View.GONE);
-                        handler.removeCallbacks(updateTimer);
-                        mReverseCountDownTimer.cancel();
-                        mReverseCountDownTimer.onFinish();
-                        startBreakCountdownTimer(TimeUnit.MINUTES.toMillis(model.getBreakTime()),
-                                mSectionModelList.get(i+1).getmSectionName());
+                            mSectionNameTxt.setText("Break Time");
+                            questnCount.setVisibility(View.GONE);
+                            totalTimeTxt.setVisibility(View.GONE);
+                            butnstart.setVisibility(View.GONE);
+                            butnreset.setVisibility(View.GONE);
+
+                            handler.removeCallbacks(updateTimer);
+                            mReverseCountDownTimer.cancel();
+                            //mReverseCountDownTimer.onFinish();
+
+                            if (sectionCount != mSectionModelList.size()) {
+                                startBreakCountdownTimer(TimeUnit.MINUTES.toMillis(model.getBreakTime()),
+                                        mSectionModelList.get(i + 1).getmSectionName());
+                            }
+
+                        if (sectionCount == mSectionModelList.size()) {
+                            questnCount.setText(String.valueOf(questCount + "/" + sectionQuestnCount));
+                            mSectionNameTxt.setText(mSectionModelList.get(i).getmSectionName());
+                            questnCount.setVisibility(View.VISIBLE);
+                            totalTimeTxt.setVisibility(View.VISIBLE);
+                            butnstart.setVisibility(View.VISIBLE);
+                            butnreset.setVisibility(View.VISIBLE);
+                            mReverseCountDownTimer.cancel();
+                            handler.removeCallbacks(updateTimer);
+
+
+                        }
+
                     }
                 }
             } else {
+                if (i > sectionCount)
                 return;
             }
         }
@@ -249,7 +277,7 @@ public class TimerActivity extends AppCompatActivity implements View.OnClickList
         long millisTraversed = millisStarting - millisRemaing;
         long minsTraversed = TimeUnit.MILLISECONDS.toMinutes(millisTraversed);
         if (minsTraversed <= sectionModel.getmTimePerSection()) {
-            mSectionCompletedTxt.setText(sectionModel.getmSectionName() + " Completed!" "n");
+            mSectionCompletedTxt.setText(sectionModel.getmSectionName() + " Completed!" + "\n");
         }
     }
 
@@ -293,6 +321,8 @@ public class TimerActivity extends AppCompatActivity implements View.OnClickList
                 mSectionNameTxt.setText(sectionName);
                 questnCount.setVisibility(View.VISIBLE);
                 totalTimeTxt.setVisibility(View.VISIBLE);
+                butnstart.setVisibility(View.VISIBLE);
+                butnreset.setVisibility(View.VISIBLE);
 
                 if(timeTraversed != 0) {
                     startReverseCountdownTimer(millisRemaing);
@@ -317,15 +347,27 @@ public class TimerActivity extends AppCompatActivity implements View.OnClickList
         time.setText("00:00");
     }
 
+    private void handleReverseCountdownTimerReset() {
+        millisRemaing = 0;
+        mReverseCountDownTimer.cancel();
+        //mReverseCountDownTimer.onFinish();
+        totalTimeTxt.setText("00:00");
+        questnCount.setText("0/0");
+        questCount = 0;
+        timeTraversed = 0;
+    }
+
     private void handleStartBtnClick() {
         startTimerForSection();
         if(!isFirstClick) {
             isFirstClick = true;
-            timerLyt.setBackgroundResource(R.drawable.timer_bg_green);
+            //timerLyt.setBackgroundResource(R.drawable.timer_bg_green);
         }
         if (t == 1) {
             butnstart.setText("Pause");
             starttime = SystemClock.uptimeMillis();
+            questnCount.setText(String.valueOf(questCount + "/" + sectionQuestnCount));
+
             if(timeTraversed != 0) {
                 startReverseCountdownTimer(millisRemaing);
             }
@@ -360,7 +402,7 @@ public class TimerActivity extends AppCompatActivity implements View.OnClickList
             if (millisRemaing > 0) {
                 if (butnstart.getText().toString().equalsIgnoreCase("Pause")) {
                     mReverseCountDownTimer.cancel();
-                    mReverseCountDownTimer.onFinish();
+                    //mReverseCountDownTimer.onFinish();
                 }
             }
         }
@@ -418,7 +460,7 @@ public class TimerActivity extends AppCompatActivity implements View.OnClickList
             }
 
             public void onFinish() {
-               // totalTimeTxt.setText("done!");
+                mSectionNameTxt.setText("Times Up!");
             }
         }.start();
     }

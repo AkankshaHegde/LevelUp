@@ -36,4 +36,6 @@ public class Constants {
     public static final String USER_PROFILE_PIC_PARENT_PATH = "/Android/data/com.gmat.terminator";
 
     public static final int REQUEST_CODE_TEMPLATE = 215;
+    public static final String INTENT_EXTRA_IS_TEMPLATE_EDIT = "intent_extra_is_template_edit";
+
 }
